@@ -1,12 +1,15 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { useKakao } from "vue3-kakao-maps/@utils";
 
-import App from './App.vue'
-import router from './router'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-const app = createApp(App)
+import App from "./App.vue";
+import router from "./router";
 
-app.use(createPinia())
-app.use(router)
+const app = createApp(App);
+useKakao("5e28e613a6f651bac00ca7d7b68578eb");
 
-app.mount('#app')
+app.use(createPinia());
+app.use(router);
+
+app.mount("#app");

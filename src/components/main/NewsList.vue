@@ -1,5 +1,32 @@
 <script setup>
+import { ref } from "vue";
 import NewsCard from "./news/NewsCard.vue";
+
+const id = ref(0);
+
+const newsList = ref([
+  {
+    id: id.value++,
+    title: "News1",
+    subTitle: "subTitle1",
+    viewCount: 231,
+    writeTime: "Mon, Dec 19",
+  },
+  {
+    id: id.value++,
+    title: "News2",
+    subTitle: "subTitle2",
+    viewCount: 312,
+    writeTime: "Mon, Dec 20",
+  },
+  {
+    id: id.value++,
+    title: "News3",
+    subTitle: "subTitle3",
+    viewCount: 313,
+    writeTime: "Mon, Dec 21",
+  },
+]);
 </script>
 
 <template>
@@ -10,9 +37,7 @@ import NewsCard from "./news/NewsCard.vue";
     </div>
   </div>
   <div class="row">
-    <NewsCard />
-    <NewsCard />
-    <NewsCard />
+    <NewsCard v-for="newsInfo in newsList" :key="newsInfo.id" :newsInfo="newsInfo" />
   </div>
 </template>
 
