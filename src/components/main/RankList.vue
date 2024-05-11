@@ -13,7 +13,7 @@ const nameList = ref([
 </script>
 
 <template>
-  <div class="container mb-2 mt-3">
+  <div class="container mb-6 mt-3">
     <div class="row align-items-center">
       <div class="col-auto"><img src="@/assets/icons/icon-ranking-title.png" width="40px" /></div>
       <div class="col-auto p-0">
@@ -23,7 +23,7 @@ const nameList = ref([
       </div>
     </div>
   </div>
-  <div class="row mt-3">
+  <div class="row mt-3 mb-3">
     <div class="col-lg-12">
       <div class="row">
         <RankApt v-for="aptInfo in nameList" :key="aptInfo.id" :aptInfo="aptInfo" />

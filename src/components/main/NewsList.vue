@@ -30,13 +30,13 @@ const newsList = ref([
 </script>
 
 <template>
-  <div class="container mb-2 mt-3">
-    <div class="row align-items-center">
+  <div class="container mb-4 mt-1">
+    <div class="row align-items-center mt-3">
       <div class="col-auto"><img src="@/assets/icons/icon-news.png" width="30px" /></div>
       <div class="col-auto p-0"><h2>News</h2></div>
     </div>
   </div>
-  <div class="row">
+  <div class="row mb-3">
     <NewsCard v-for="newsInfo in newsList" :key="newsInfo.id" :newsInfo="newsInfo" />
   </div>
 </template>

@@ -11,6 +11,7 @@ import MainView from "./views/MainView.vue";
 </script>
 
 <template>
+  
   <!--  Body Wrapper -->
   <div
     class="page-wrapper"
@@ -22,8 +23,12 @@ import MainView from "./views/MainView.vue";
     data-header-position="fixed"
   >
     <!--  Main wrapper -->
-    <div class="body-wrapper ms-0">
+    <div class="justify-content-center">
       <Header />
+    </div>
+    
+    <div class="body-wrapper ms-0 me-0">
+      
       <MainView />
     </div>
   </div>
