@@ -35,6 +35,7 @@ import AptView from "@/views/AptView.vue";
       <AptView/>
     </div>
   </div>
+
 </template>
 
 <style>
