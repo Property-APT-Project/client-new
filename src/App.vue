@@ -5,9 +5,11 @@ import "@/assets/js/sidebarmenu.js";
 import "@/assets/js/app.min.js";
 import "@/assets/libs/apexcharts/dist/apexcharts.min.js";
 import "@/assets/libs/simplebar/dist/simplebar.js";
+
 import { Icon } from "@iconify/vue";
-import Header from "./layout/Header.vue";
-import MainView from "./views/MainView.vue";
+import Header from "@/layout/Header.vue";
+import MainView from "@/views/MainView.vue";
+import AptView from "@/views/AptView.vue";
 </script>
 
 <template>
@@ -25,12 +27,12 @@ import MainView from "./views/MainView.vue";
   >
     <!--  Main wrapper -->
     <div class="justify-content-center">
-      <Header />
+      <Header></Header>
     </div>
     
     <div class="body-wrapper ms-0 me-0">
       
-      <MainView />
+      <AptView/>
     </div>
   </div>
 </template>
