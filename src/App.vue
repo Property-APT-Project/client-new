@@ -21,6 +21,7 @@ import MainView from "./views/MainView.vue";
     data-sidebartype="full"
     data-sidebar-position="fixed"
     data-header-position="fixed"
+    style="background-color: #f4f7fb;"
   >
     <!--  Main wrapper -->
     <div class="justify-content-center">
