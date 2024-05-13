@@ -13,28 +13,21 @@ import AptView from "@/views/AptView.vue";
 </script>
 
 <template>
-  
   <!--  Body Wrapper -->
-  <div
-    class="page-wrapper"
+  <body
+    class="page-wrapper w-100 h-100"
     id="main-wrapper"
     data-layout="vertical"
     data-navbarbg="skin6"
     data-sidebartype="full"
     data-sidebar-position="fixed"
     data-header-position="fixed"
-    style="background-color: #f4f7fb;"
+    style="background-color: #f4f7fb"
   >
-    <!--  Main wrapper -->
-    <div class="justify-content-center">
-      <Header></Header>
-    </div>
-    
-    <div class="body-wrapper ms-0 me-0">
-      
-      <AptView/>
-    </div>
-  </div>
+    <Header></Header>
+    <!-- <MainView /> -->
+    <AptView />
+  </body>
 </template>
 
 <style>

@@ -8,13 +8,23 @@
           <form class="w-100">
             <div class="row w-100 m-1">
               <div class="col-9 ps-3">
-                <input class="w-100 input-lg p-2" style="font-size: 20px; border: none;" placeholder="검색어를 입력하세요." type="text"/>
+                <input
+                  class="w-100 input-lg p-2"
+                  style="font-size: 20px; border: none"
+                  placeholder="검색어를 입력하세요."
+                  type="text"
+                />
               </div>
               <div class="col-3">
-                <button class="w-100 rounded-pill bg-light p-2 text-gray" type="submit" style="font-size: 20px; border: none;">검색</button>
+                <button
+                  class="w-100 rounded-pill bg-light p-2 text-gray"
+                  type="submit"
+                  style="font-size: 20px; border: none"
+                >
+                  검색
+                </button>
               </div>
             </div>
-            
           </form>
         </div>
       </div>
