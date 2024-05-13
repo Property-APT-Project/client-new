@@ -1,11 +1,11 @@
 import PostForm from "@/components/community/PostForm.vue";
-import FindPassword from "@/components/user/FindPassword.vue";
-import Login from "@/components/user/Login.vue";
-import Profile from "@/components/user/Profile.vue";
-import Signup from "@/components/user/Signup.vue";
 import MainView from "@/views/MainView.vue";
 import CommunityView from "@/views/CommunityView.vue";
 import PostDetailView from "@/views/PostDetailView.vue";
+import FindPasswordView from "@/views/user/FindPasswordView.vue";
+import LoginView from "@/views/user/LoginView.vue";
+import ProfileView from "@/views/user/ProfileView.vue";
+import SignupView from "@/views/user/SignupView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -19,22 +19,22 @@ const router = createRouter({
     {
       path: "/login",
       name: "loginForm",
-      component: Login,
+      component: LoginView,
     },
     {
       path: "/join",
       name: "signupForm",
-      component: Signup,
+      component: SignupView,
     },
     {
       path: "/profile",
       name: "profile",
-      component: Profile,
+      component: ProfileView,
     },
     {
       path: "/pw-service",
       name: "pwService",
-      component: FindPassword,
+      component: FindPasswordView,
     },
     {
       path: "/community",

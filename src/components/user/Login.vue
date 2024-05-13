@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { useTokenStore } from "@/stores/token";
+import Logo from "./Logo.vue";
 
 const { VITE_APP_API_URL, VITE_APP_LOGIN, VITE_APP_PROFILE } = import.meta.env;
 const router = useRouter();
@@ -50,29 +51,16 @@ async function login() {
 <template>
   <div>
     <!--  Body Wrapper -->
-    <div
-      class="page-wrapper"
-      id="main-wrapper"
-      data-layout="vertical"
-      data-navbarbg="skin6"
-      data-sidebartype="full"
-      data-sidebar-position="fixed"
-      data-header-position="fixed"
-    >
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+      data-sidebar-position="fixed" data-header-position="fixed">
       <div
-        class="position-relative overflow-hidden text-bg-light min-vh-100 d-flex align-items-center justify-content-center"
-      >
+        class="position-relative overflow-hidden text-bg-light min-vh-100 d-flex align-items-center justify-content-center">
         <div class="d-flex align-items-center justify-content-center w-100">
           <div class="row justify-content-center w-100">
             <div class="col-md-8 col-lg-6 col-xxl-3">
               <div class="card mb-0">
                 <div class="card-body">
-                  <router-link
-                    :to="{ name: 'root' }"
-                    class="text-nowrap logo-img text-center d-block py-3 w-100"
-                  >
-                    <img src="@/assets/images/logos/logo.svg" alt="" />
-                  </router-link>
+                  <Logo />
                   <!-- <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100"> -->
 
                   <!-- </a> -->
@@ -83,40 +71,19 @@ async function login() {
                   <form @submit.prevent="login">
                     <div class="mb-3">
                       <label for="email" class="form-label">아이디</label>
-                      <input
-                        type="email"
-                        v-model="formData.email"
-                        class="form-control"
-                        id="email"
-                        aria-describedby="emailHelp"
-                        placeholder="이메일 주소 입력"
-                      />
+                      <input type="email" v-model="formData.email" class="form-control" id="email"
+                        aria-describedby="emailHelp" placeholder="이메일 주소 입력" />
                     </div>
                     <div class="mb-4">
                       <label for="password" class="form-label">비밀번호</label>
-                      <input
-                        type="password"
-                        v-model="formData.password"
-                        class="form-control"
-                        id="exampleInputPassword1"
-                        placeholder="비밀번호 입력"
-                      />
+                      <input type="password" v-model="formData.password" class="form-control" id="exampleInputPassword1"
+                        placeholder="비밀번호 입력" />
                     </div>
-                    <div
-                      class="d-flex align-items-center justify-content-between mb-3"
-                    >
+                    <div class="d-flex align-items-center justify-content-between mb-3">
                       <div class="form-check">
-                        <input
-                          class="form-check-input primary"
-                          type="checkbox"
-                          value=""
-                          id="flexCheckChecked"
-                          checked
-                        />
-                        <label
-                          class="form-check-label text-dark"
-                          for="flexCheckChecked"
-                        >
+                        <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked"
+                          checked />
+                        <label class="form-check-label text-dark" for="flexCheckChecked">
                           아이디 저장
                         </label>
                       </div>
@@ -124,27 +91,17 @@ async function login() {
                     <div class="mb-2 text-center text-danger" v-if="errMsg">
                       {{ errMsg }}
                     </div>
-                    <button
-                      :disabled="!formData.email || !formData.password"
-                      class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2"
-                    >
+                    <button :disabled="!formData.email || !formData.password"
+                      class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
                       로그인
                     </button>
                     <div class="row d-flex justify-content-around">
                       <div class="col-6 text-center border-right">
-                        <router-link
-                          :to="{ name: 'signupForm' }"
-                          class="text-primary fw-bold ms-2"
-                          >회원가입</router-link
-                        >
+                        <router-link :to="{ name: 'signupForm' }" class="text-primary fw-bold ms-2">회원가입</router-link>
                         <!-- <a class="text-primary fw-bold ms-2" href="./authentication-register.html">회원가입</a> -->
                       </div>
                       <div class="col-6 text-center">
-                        <router-link
-                          :to="{ name: 'pwService' }"
-                          class="text-primary fw-bold"
-                          >비밀번호 찾기</router-link
-                        >
+                        <router-link :to="{ name: 'pwService' }" class="text-primary fw-bold">비밀번호 찾기</router-link>
                         <!-- <a class="text-primary fw-bold " href="./authentication-register.html">비밀번호 찾기</a> -->
                       </div>
                     </div>
