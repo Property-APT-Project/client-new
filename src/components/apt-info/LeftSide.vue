@@ -49,7 +49,7 @@ const activateComplex = () => {
 </script>
 
 <template>
-  <div class="body-wrapper col-2 m-0 pe-0 bg-light">
+  <div class="body-wrapper col-3 m-0 pe-0 bg-light">
     <div class="container-fluid h-100">
       <mini-search-bar />
       <nav class="tap">

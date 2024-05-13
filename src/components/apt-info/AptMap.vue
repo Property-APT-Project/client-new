@@ -9,7 +9,7 @@ const coordinate = {
 </script>
 
 <template>
-  <div class="body-wrapper col-8 m-0" style="height: 1000px">
+  <div class="body-wrapper col-6 m-0 ps-0 pe-0" style="height: 1000px">
     <div class="container-fluid h-100">
       <div class="row align-items-stretch justify-content-center h-100">
         <KakaoMap
