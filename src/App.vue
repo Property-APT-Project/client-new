@@ -10,6 +10,7 @@ import { Icon } from "@iconify/vue";
 import Header from "@/layout/Header.vue";
 import MainView from "@/views/MainView.vue";
 import AptView from "@/views/AptView.vue";
+import AptDetailView from "./views/AptDetailView.vue";
 </script>
 
 <template>
@@ -26,7 +27,8 @@ import AptView from "@/views/AptView.vue";
   >
     <Header></Header>
     <!-- <MainView /> -->
-    <AptView />
+    <!-- <AptView /> -->
+    <AptDetailView/>
   </body>
 </template>
 
