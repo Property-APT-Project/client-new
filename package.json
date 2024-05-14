@@ -17,7 +17,8 @@
     "vue": "^3.4.21",
     "vue-recaptcha": "^3.0.0-alpha.2",
     "vue-recaptcha-v3": "^2.0.1",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue3-kakao-maps": "^2.3.1"
   },
   "devDependencies": {
     "@iconify/vue": "^4.1.2",

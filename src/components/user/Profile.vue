@@ -118,7 +118,7 @@ function base64(file) {
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
     <div
-      class="position-relative overflow-hidden text-bg-light min-vh-100 d-flex align-items-center justify-content-center text-nowrap">
+      class="position-relative overflow-hidden min-vh-100 d-flex align-items-center justify-content-center text-nowrap">
       <!-- <div class="d-flex"> -->
       <div class="card">
         <div class="card-body">
