@@ -18,6 +18,8 @@ const useTokenStore = defineStore('token', {
   })
 })
 
+const isVerified = ref(false)
+const isRequested = ref(false)
 const token = useTokenStore()
 const errMsg = ref('')
 
@@ -68,9 +70,9 @@ async function login() {
         class="position-relative overflow-hidden text-bg-light min-vh-100 d-flex align-items-center justify-content-center">
         <div class="d-flex align-items-center justify-content-center w-100">
           <div class="row justify-content-center w-100">
-            <div class="col-md-8 col-lg-6 col-xxl-3">
+            <div class="col-md-8 col-lg-6 col-xxl-4">
               <div class="card mb-0">
-                <div class="card-body">
+                <div class="card-body text-nowrap">
                   <Logo />
                   <!-- <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100"> -->
 
@@ -87,19 +89,33 @@ async function login() {
                         </div>
                         <!-- <div class="col-4"> -->
                         <div class="col-4">
-                          <button class="btn btn-primary w-100">인증번호 요청</button>
+                          <div class="">
+                            <button v-if="!isRequested" class="btn btn-primary w-100 text-nowrap">인증번호 요청</button>
+                            <button v-else class="btn btn-primary w-100"> 재요청</button>
+                          </div>
                         </div>
                         <!-- </div> -->
                       </div>
                     </div>
                     <div class="mb-4">
                       <!-- <label for="exampleInputPassword1" class="form-label">인증번호</label> -->
-                      <input disabled="false" type="text" v-model="formData.password" class="form-control"
+                      <input :disabled="!isVerified" type="text" v-model="formData.password" class="form-control"
                         id="exampleInputPassword1" placeholder="인증번호 입력">
                     </div>
+                    <div v-show="isVerified">
+                      <div class="mb-2">
+                        <label for="password" class="form-label">비밀번호</label>
+                        <input type="password" class="mt-2 form-control" id="password" placeholder="비밀번호 입력">
+                      </div>
+                      <div class="mb-2">
+                        <input type="password" class="mb-3 form-control" id="password2" placeholder="비밀번호 확인">
+                      </div>
+                    </div>
                     <div class="mb-2 text-center text-danger" v-if="errMsg">{{ errMsg }}</div>
-                    <button :disabled="!formData.email || !formData.password"
+                    <button v-if="!isVerified" :disabled="!formData.email || !formData.password"
                       class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">확인</button>
+                    <button v-else :disabled="!formData.email || !formData.password"
+                      class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">변경 완료</button>
                   </form>
                 </div>
               </div>

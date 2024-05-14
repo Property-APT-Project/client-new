@@ -118,7 +118,7 @@ function base64(file) {
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
     <div
-      class="position-relative overflow-hidden text-bg-light min-vh-100 d-flex align-items-center justify-content-center">
+      class="position-relative overflow-hidden text-bg-light min-vh-100 d-flex align-items-center justify-content-center text-nowrap">
       <!-- <div class="d-flex"> -->
       <div class="card">
         <div class="card-body">
@@ -126,8 +126,11 @@ function base64(file) {
             <div class="col-md-4">
               <h5 class="card-title fw-semibold mb-5">회원정보</h5>
               <!-- <div class="card"> -->
-              <img src="@/assets/images/profile/user-1.jpg" id="profileImage" class="card-img" alt="..." />
-              <div class="d-flex card-body justify-content-center">
+              <div class="d-flex card-body justify-content-center p-3">
+                <img src="@/assets/images/profile/user-1.jpg" id="profileImage"
+                  class="card-img img-thumbnail profile-img" alt="..." />
+              </div>
+              <div class="d-flex justify-content-center">
                 <label class="btn btn-light text-primary">
                   사진변경
                   <input hidden ref="image" id="profileImageInput" type="file" name="image" accept="image/*"
@@ -154,69 +157,82 @@ function base64(file) {
               <div class="card-body"> -->
             <div class="col-md-8">
               <Logo />
+              <div class="form-label">기본 보안 설정</div>
+              <div v-if="!isModify"
+                class="mb-2 d-flex shadow rounded justify-content-between align-middle full-width-flex-pass">
+                <label for="password" class="form-label pt-2">비밀번호</label>
+                <div class="">
+                  <router-link :to="{ name: 'pwService' }" class="btn btn-light p-1 text-primary"> 변경 </router-link>
+                </div>
+                <input hidden type="password" class="form-control" id="password" placeholder="비밀번호 입력">
+              </div>
               <form @submit.prevent="">
-                <div class="mb-3">
-                  <label for="name" class="form-label">이름</label>
-                  <input v-model="formData.name" v-show="isModify" type="text" class="form-control" id="name"
-                    placeholder="이름 입력" />
-                  <div v-show="!isModify" class="">{{ presentData.name }}</div>
-                </div>
-                <div v-show="!isModify" class="mb-3">
-                  <label for="email" class="form-label">아이디</label>
-                  <div v-show="!isModify" class="">{{ presentData.email }}</div>
-                  <!-- <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                <div class="form-label">나의 프로필</div>
+                <div class="shadow rounded full-width-flex-profile mb-2">
+                  <div class="mb-3">
+                    <label for="name" class="form-label">이름</label>
+                    <input v-model="formData.name" v-show="isModify" type="text" class="form-control" id="name"
+                      placeholder="이름 입력" />
+                    <div v-show="!isModify" class="">{{ presentData.name }}</div>
+                  </div>
+                  <div v-show="!isModify" class="mb-3">
+                    <label for="email" class="form-label">아이디</label>
+                    <div v-show="!isModify" class="">{{ presentData.email }}</div>
+                    <!-- <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
                     placeholder="이메일 주소 입력" /> -->
-                </div>
-                <!-- <div class="mb-2">
+                  </div>
+                  <!-- <div class="mb-2">
                   <label for="password" class="form-label">비밀번호</label>
                   <div class="">*********</div>
                   <input hidden type="password" class="form-control" id="password" placeholder="비밀번호 입력">
-                </div> -->
-                <!-- <div class="mb-2">
+                  </div> -->
+                  <!-- <div class="mb-2">
                   <input hidden type="password" class="form-control" id="password2" placeholder="비밀번호 확인">
-                </div> -->
+                  </div> -->
 
-                <!-- <div class="mb-2">
+                  <!-- <div class="mb-2">
                   <label for="address" class="form-label">주소</label>
                   <input v-show="isModify" type="text" class="form-control" id="address" placeholder="주소 입력" />
                   <div class="">{{ formData.address }}</div>
-                </div> -->
+                  </div> -->
 
-                <div class="mb-3">
-                  <label for="address" class="form-label ">주소</label>
-                  <div v-show="isModify">
-                    <div class="row">
-                      <div class="col-lg-4">
-                        <input class="form-control mb-2" type="text" placeholder="우편번호" v-model="data.zonecode"
+                  <div class="mb-3">
+                    <label for="address" class="form-label ">주소</label>
+                    <div v-show="isModify">
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <input class="form-control mb-2" type="text" placeholder="우편번호" v-model="data.zonecode"
+                            readonly />
+                        </div>
+                        <div class="col-lg-2">
+                          <button class="btn btn-light text-primary mb-2" id="postcode"
+                            @click.self.prevent="openPostcode">
+                            검색
+                          </button>
+
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <input class="col form-control" type="text" v-model="data.roadAddress" placeholder="주소"
                           readonly />
                       </div>
-                      <div class="col-lg-2">
-                        <button class="btn btn-light text-primary mb-2" id="postcode"
-                          @click.self.prevent="openPostcode">
-                          검색
-                        </button>
-
+                      <div class="mb-3">
+                        <input class="col form-control" type="text" v-model="data.detailAddress" placeholder="상세주소" />
                       </div>
                     </div>
-                    <div class="mb-3">
-                      <input class="col form-control" type="text" v-model="data.roadAddress" placeholder="주소"
-                        readonly />
+                    <div v-show="!isModify">
+                      <div class="">{{ presentData.address }}</div>
                     </div>
-                    <div class="mb-3">
-                      <input class="col form-control" type="text" v-model="data.detailAddress" placeholder="상세주소" />
-                    </div>
-                  </div>
-                  <div v-show="!isModify">
-                    <div class="">{{ presentData.address }}</div>
+
                   </div>
 
+                  <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">휴대폰 번호</label>
+                    <input v-show="isModify" type="tel" class="form-control" id="phoneNumber" placeholder="휴대폰 번호 입력" />
+                    <div v-show="!isModify" class="">{{ presentData.phoneNumber }}</div>
+                  </div>
                 </div>
 
-                <div class="mb-5">
-                  <label for="phoneNumber" class="form-label">휴대폰 번호</label>
-                  <input v-show="isModify" type="tel" class="form-control" id="phoneNumber" placeholder="휴대폰 번호 입력" />
-                  <div v-show="!isModify" class="">{{ presentData.phoneNumber }}</div>
-                </div>
 
                 <button @click="() => {
                   resetData();
@@ -257,4 +273,34 @@ function base64(file) {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.profile-img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+.full-width-flex-pass {
+  /* display: flex; */
+  width: 100%;
+  align-items: center;
+  border: 2px solid #A020F0;
+  /* 경계선 추가 */
+  padding: 10px;
+  /* 내부 여백 추가 */
+  border-radius: 5px;
+  /* 모서리 둥글게 */
+}
+
+.full-width-flex-profile {
+  /* display: flex; */
+  width: 100%;
+  align-items: center;
+  border: 0px solid #d3d3d3;
+  /* 경계선 추가 */
+  padding: 10px;
+  /* 내부 여백 추가 */
+  border-radius: 5px;
+  /* 모서리 둥글게 */
+}
+</style>
