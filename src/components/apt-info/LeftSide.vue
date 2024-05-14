@@ -97,10 +97,10 @@ watch(currInfo, (newInfo, prevInfo) => {
           </li>
           <span v-if="isSelectComplex"> </span>
           <span v-else-if="activeSale"
-            ><AptSale v-for="info in aptInterestList" :key="info.id" :info="info" />
+            ><apt-sale v-for="info in aptInterestList" :key="info.id" :info="info" />
           </span>
           <span v-else>
-            <AptComplex
+            <apt-complex
               v-for="info in complexInterestList"
               @response="(info) => (currInfo = info)"
               :key="info.id"
@@ -118,13 +118,13 @@ watch(currInfo, (newInfo, prevInfo) => {
             <span class="hide-menu">LIST</span>
           </li>
           <span v-if="isSelectComplex">
-            <AptSale v-for="info in selectedAptList" :key="info.id" :info="info" />
+            <apt-sale v-for="info in selectedAptList" :key="info.id" :info="info" />
           </span>
           <span v-else-if="activeSale"
-            ><AptSale v-for="info in aptNonInterestList" :key="info.id" :info="info"
+            ><apt-sale v-for="info in aptNonInterestList" :key="info.id" :info="info"
           /></span>
           <span v-else>
-            <AptComplex v-for="info in complexList" :key="info.id" :info="info" />
+            <apt-complex v-for="info in complexList" :key="info.id" :info="info" />
           </span>
         </ul>
       </div>
