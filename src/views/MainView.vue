@@ -7,9 +7,9 @@ import RankList from "@/components/main/RankList.vue";
 <template>
   <div class="body-wrapper ms-0 me-0">
     <div class="body-wrapper-inner mb-6 container-fluid w-100">
-      <SearchBar />
-      <RankList />
-      <NewsList />
+      <search-bar />
+      <rank-list />
+      <news-list />
     </div>
   </div>
 </template>

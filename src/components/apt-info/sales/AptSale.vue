@@ -6,7 +6,7 @@ const props = defineProps({
 
 <template>
   <li class="sidebar-item mb-3">
-    <a class="" href="#">
+    <a class="" href="/apt-detail">
       <div class="row bg-gray p-3" style="background-color: white">
         <div class="col-5 d-flex">
           <img

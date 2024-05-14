@@ -11,7 +11,7 @@ const coordinate = {
     <div class="col-lg-12 d-flex align-items-stretch">
       <div class="card w-100">
         <div class="card-body p-4">
-          <h5 class="card-title fw-semibold mb-4">Map</h5>
+          <h5 class="card-title fw-semibold mb-4">지도</h5>
           <div class="container-fluid">
             <div class="row align-items-stretch justify-content-center">
               <KakaoMap
