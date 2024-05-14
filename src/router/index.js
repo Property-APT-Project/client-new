@@ -12,7 +12,12 @@ const router = createRouter({
     },
     {
       path: "/apt",
-      name: "root",
+      name: "apt",
+      component: AptView,
+    },
+    {
+      path: "/apt-detail",
+      name: "apt-detail",
       component: AptView,
     },
   ],

@@ -8,11 +8,10 @@ import RightSideVue from "@/components/apt-info/RightSide.vue";
 
 <template>
   <div class="body-wrapper ms-0 me-0">
-    <div class="row">
+    <div class="row" style="height: 100vh">
       <LeftSideVue />
 
       <AptMap />
-      <RightSideVue />
     </div>
   </div>
 </template>

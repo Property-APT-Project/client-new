@@ -17,7 +17,7 @@
               </div>
               <div class="col-3 p-0 m-0 align-items-center">
                 <button
-                  class="p-1 w-100 rounded-pill bg-light text-gray align-self-center"
+                  class="p-1 w-100 rounded-pill bg-light text-gray align-self-center h-100"
                   type="submit"
                   style="font-size: 12px; border: none"
                 >

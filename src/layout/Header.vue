@@ -13,7 +13,7 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a href="./index.html" class="text-nowrap logo-img">
+          <a href="/" class="text-nowrap logo-img">
             <img src="../assets/images/logos/logo.svg" alt="" />
           </a>
         </div>
@@ -21,10 +21,10 @@
         <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link text-dark fs-6 me-2" href="#"> Main</a>
+              <a class="nav-link text-dark fs-6 me-2" href="/"> Main</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark fs-6 me-2" href="#"> APT</a>
+              <a class="nav-link text-dark fs-6 me-2" href="/apt"> APT</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text-dark fs-6 me-2" href="#"> Community</a>

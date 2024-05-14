@@ -9,9 +9,12 @@ const coordinate = {
 </script>
 
 <template>
-  <div class="body-wrapper col-6 m-0 ps-0 pe-0" style="height: 1000px">
-    <div class="container-fluid h-100">
-      <div class="row align-items-stretch justify-content-center h-100">
+  <div class="body-wrapper col-lg-9 col-md-8 col-sm-12 m-0 ps-0 pe-0" style="height: 100%">
+    <div class="ms-0 me-0" style="width: 100%; height: 100%">
+      <div
+        class="row align-items-stretch justify-content-center h-100"
+        style="width: 100%; height: 100%"
+      >
         <KakaoMap
           :lat="coordinate.lat"
           :lng="coordinate.lng"
