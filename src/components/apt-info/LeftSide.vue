@@ -69,7 +69,7 @@ watch(currInfo, (newInfo, prevInfo) => {
 </script>
 
 <template>
-  <div class="body-wrapper col-lg-3 col-md-4 col-sm-12 m-0 pe-3 bg-light">
+  <div class="body-wrapper col-lg-3 col-md-4 col-sm-12 m-0 pe-3 bg-light h-100">
     <div class="container-fluid h-100">
       <mini-search-bar />
       <nav class="tap">
@@ -86,8 +86,8 @@ watch(currInfo, (newInfo, prevInfo) => {
           </li>
         </ul>
       </nav>
-      <div class="sidebar-nav scrollspy-example" style="overflow: scroll">
-        <ul id="sidebarnav" style="height: 600px">
+      <div class="sidebar-nav scrollspy-example" style="overflow: scroll; height: 80%;">
+        <ul id="sidebarnav">
           <li v-if="!isSelectComplex" class="nav-small-cap">
             <iconify-icon
               icon="solar:menu-dots-linear"
