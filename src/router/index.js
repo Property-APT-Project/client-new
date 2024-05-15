@@ -9,6 +9,7 @@ import SignupView from "@/views/user/SignupView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import NewPasswordView from "@/views/user/NewPasswordView.vue";
 import AptView from "@/views/AptView.vue";
+import AptDetailView from "@/views/AptDetailView.vue";
 
 
 const router = createRouter({
@@ -62,7 +63,7 @@ const router = createRouter({
     {
       path: "/apt-detail",
       name: "apt-detail",
-      component: AptView,
+      component: AptDetailView,
     },
   ],
 });
