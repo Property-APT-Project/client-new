@@ -24,9 +24,9 @@ const presentData = ref({
   name: "dsfdsf",
   address: "서울특별시 용산구",
   phoneNumber: "010-9999-1111",
-})
+});
 
-const isModify = ref(false)
+const isModify = ref(false);
 
 const token = useTokenStore();
 console.log(token);
@@ -53,21 +53,21 @@ async function sendData() {
 }
 
 function resetData() {
-  console.log("RESET DATA")
-  Object.assign(formData.value, presentData.value)
-  setFalse
+  console.log("RESET DATA");
+  Object.assign(formData.value, presentData.value);
+  setFalse;
   // formData.value = presentData.value
 }
 
 function changeState() {
-  isModify.value = !isModify.value
+  isModify.value = !isModify.value;
 }
 
 const data = ref({
   zonecode: "",
   roadAddress: "",
   detailAddress: "",
-})
+});
 
 function openPostcode() {
   new window.daum.Postcode({
@@ -79,46 +79,54 @@ function openPostcode() {
   }).open();
 }
 
-const file = ref("")
+const file = ref("");
 async function uploadImage(event) {
-  const files = event.target?.files
-  file.value = files[0]
-  await base64(file.value)
+  const files = event.target?.files;
+  file.value = files[0];
+  await base64(file.value);
 }
 
-const isImageChanged = ref(false)
+const isImageChanged = ref(false);
 const setTrue = () => {
-  isImageChanged.value = true
-  console.log(isImageChanged.value)
-}
+  isImageChanged.value = true;
+  console.log(isImageChanged.value);
+};
 const setModifyTrue = () => {
-  isModify.value = true
-}
+  isModify.value = true;
+};
 const setFalse = () => {
-  isImageChanged.value = false
-  isModify.value = false
-  console.log(isImageChanged.value)
-}
+  isImageChanged.value = false;
+  isModify.value = false;
+  console.log(isImageChanged.value);
+};
 function base64(file) {
-  return new Promise(resolve => {
-    let a = new FileReader()
-    a.onload = e => {
-      resolve(e.target.result)
-      const previewImage = document.getElementById('profileImage')
-      previewImage.src = e.target.result
-    }
+  return new Promise((resolve) => {
+    let a = new FileReader();
+    a.onload = (e) => {
+      resolve(e.target.result);
+      const previewImage = document.getElementById("profileImage");
+      previewImage.src = e.target.result;
+    };
 
-    a.readAsDataURL(file)
-    setTrue()
-  })
+    a.readAsDataURL(file);
+    setTrue();
+  });
 }
 </script>
 
 <template>
-  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-    data-sidebar-position="fixed" data-header-position="fixed">
+  <div
+    class="page-wrapper"
+    id="main-wrapper"
+    data-layout="vertical"
+    data-navbarbg="skin6"
+    data-sidebartype="full"
+    data-sidebar-position="fixed"
+    data-header-position="fixed"
+  >
     <div
-      class="position-relative overflow-hidden min-vh-100 d-flex align-items-center justify-content-center text-nowrap">
+      class="position-relative overflow-hidden min-vh-100 d-flex align-items-center justify-content-center text-nowrap"
+    >
       <!-- <div class="d-flex"> -->
       <div class="card">
         <div class="card-body">
@@ -127,14 +135,26 @@ function base64(file) {
               <h5 class="card-title fw-semibold mb-5">회원정보</h5>
               <!-- <div class="card"> -->
               <div class="d-flex card-body justify-content-center p-3">
-                <img src="@/assets/images/profile/user-1.jpg" id="profileImage"
-                  class="card-img img-thumbnail profile-img" alt="..." />
+                <img
+                  src="@/assets/images/profile/user-1.jpg"
+                  id="profileImage"
+                  class="card-img img-thumbnail profile-img"
+                  alt="..."
+                />
               </div>
               <div class="d-flex justify-content-center">
                 <label class="btn btn-light text-primary">
                   사진변경
-                  <input hidden ref="image" id="profileImageInput" type="file" name="image" accept="image/*"
-                    multiple="multiple" @change="uploadImage">
+                  <input
+                    hidden
+                    ref="image"
+                    id="profileImageInput"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple="multiple"
+                    @change="uploadImage"
+                  />
                 </label>
                 <!-- <button ref="image" id="input" type="file" name="image" accept="image/*" multiple="multiple"
                   class="btn btn-light" @change="uploadImage()"> hi </button>
@@ -158,26 +178,49 @@ function base64(file) {
             <div class="col-md-8">
               <Logo />
               <div class="form-label">기본 보안 설정</div>
-              <div v-if="!isModify"
-                class="mb-2 d-flex shadow rounded justify-content-between align-middle full-width-flex-pass">
+              <div
+                v-if="!isModify"
+                class="mb-2 d-flex shadow rounded justify-content-between align-middle full-width-flex-pass"
+              >
                 <label for="password" class="form-label pt-2">비밀번호</label>
                 <div class="">
-                  <router-link :to="{ name: 'pwService' }" class="btn btn-light p-1 text-primary"> 변경 </router-link>
+                  <router-link
+                    :to="{ name: 'pwService' }"
+                    class="btn btn-light p-1 text-primary"
+                  >
+                    변경
+                  </router-link>
                 </div>
-                <input hidden type="password" class="form-control" id="password" placeholder="비밀번호 입력">
+                <input
+                  hidden
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  placeholder="비밀번호 입력"
+                />
               </div>
               <form @submit.prevent="">
                 <div class="form-label">나의 프로필</div>
                 <div class="shadow rounded full-width-flex-profile mb-2">
                   <div class="mb-3">
                     <label for="name" class="form-label">이름</label>
-                    <input v-model="formData.name" v-show="isModify" type="text" class="form-control" id="name"
-                      placeholder="이름 입력" />
-                    <div v-show="!isModify" class="">{{ presentData.name }}</div>
+                    <input
+                      v-model="formData.name"
+                      v-show="isModify"
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      placeholder="이름 입력"
+                    />
+                    <div v-show="!isModify" class="">
+                      {{ presentData.name }}
+                    </div>
                   </div>
                   <div v-show="!isModify" class="mb-3">
                     <label for="email" class="form-label">아이디</label>
-                    <div v-show="!isModify" class="">{{ presentData.email }}</div>
+                    <div v-show="!isModify" class="">
+                      {{ presentData.email }}
+                    </div>
                     <!-- <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
                     placeholder="이메일 주소 입력" /> -->
                   </div>
@@ -197,65 +240,105 @@ function base64(file) {
                   </div> -->
 
                   <div class="mb-3">
-                    <label for="address" class="form-label ">주소</label>
+                    <label for="address" class="form-label">주소</label>
                     <div v-show="isModify">
                       <div class="row">
                         <div class="col-lg-4">
-                          <input class="form-control mb-2" type="text" placeholder="우편번호" v-model="data.zonecode"
-                            readonly />
+                          <input
+                            class="form-control mb-2"
+                            type="text"
+                            placeholder="우편번호"
+                            v-model="data.zonecode"
+                            readonly
+                          />
                         </div>
                         <div class="col-lg-2">
-                          <button class="btn btn-light text-primary mb-2" id="postcode"
-                            @click.self.prevent="openPostcode">
+                          <button
+                            class="btn btn-light text-primary mb-2"
+                            id="postcode"
+                            @click.self.prevent="openPostcode"
+                          >
                             검색
                           </button>
-
                         </div>
                       </div>
                       <div class="mb-3">
-                        <input class="col form-control" type="text" v-model="data.roadAddress" placeholder="주소"
-                          readonly />
+                        <input
+                          class="col form-control"
+                          type="text"
+                          v-model="data.roadAddress"
+                          placeholder="주소"
+                          readonly
+                        />
                       </div>
                       <div class="mb-3">
-                        <input class="col form-control" type="text" v-model="data.detailAddress" placeholder="상세주소" />
+                        <input
+                          class="col form-control"
+                          type="text"
+                          v-model="data.detailAddress"
+                          placeholder="상세주소"
+                        />
                       </div>
                     </div>
                     <div v-show="!isModify">
                       <div class="">{{ presentData.address }}</div>
                     </div>
-
                   </div>
 
                   <div class="mb-3">
-                    <label for="phoneNumber" class="form-label">휴대폰 번호</label>
-                    <input v-show="isModify" type="tel" class="form-control" id="phoneNumber" placeholder="휴대폰 번호 입력" />
-                    <div v-show="!isModify" class="">{{ presentData.phoneNumber }}</div>
+                    <label for="phoneNumber" class="form-label"
+                      >휴대폰 번호</label
+                    >
+                    <input
+                      v-show="isModify"
+                      type="tel"
+                      class="form-control"
+                      id="phoneNumber"
+                      placeholder="휴대폰 번호 입력"
+                    />
+                    <div v-show="!isModify" class="">
+                      {{ presentData.phoneNumber }}
+                    </div>
                   </div>
                 </div>
 
-
-                <button @click="() => {
-                  resetData();
-                  setModifyTrue();
-                }
-                  " v-show="!isModify && !isImageChanged" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">회원정보
-                  수정</button>
+                <button
+                  @click="
+                    () => {
+                      resetData();
+                      setModifyTrue();
+                    }
+                  "
+                  v-show="!isModify && !isImageChanged"
+                  class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2"
+                >
+                  회원정보 수정
+                </button>
                 <div class="d-flex">
                   <!-- <div> -->
-                  <button @click="() => {
-                    setFalse();
-                  }" v-show="isModify || isImageChanged"
-                    class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2 ms-3 me-3">
+                  <button
+                    @click="
+                      () => {
+                        setFalse();
+                      }
+                    "
+                    v-show="isModify || isImageChanged"
+                    class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2 ms-3 me-3"
+                  >
                     적용
                   </button>
                   <!-- </div> -->
                   <!-- <div> -->
-                  <button @click="() => {
-                    resetData();
-                    setFalse();
-                  }
-                    " v-show="isModify || isImageChanged"
-                    class="btn btn-light w-100 py-8 fs-4 mb-4 rounded-2 ms-3 me-3">
+                  <button
+                    @click="
+                      () => {
+                        resetData();
+                        setFalse();
+                      }
+                    "
+                    v-show="isModify || isImageChanged"
+                    class="btn btn-light w-100 py-8 fs-4 mb-4 rounded-2 ms-3 me-3"
+                  >
                     취소
                   </button>
                   <!-- </div> -->
@@ -284,7 +367,7 @@ function base64(file) {
   /* display: flex; */
   width: 100%;
   align-items: center;
-  border: 2px solid #A020F0;
+  border: 2px solid #a020f0;
   /* 경계선 추가 */
   padding: 10px;
   /* 내부 여백 추가 */

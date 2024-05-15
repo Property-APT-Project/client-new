@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div>
+  <div class="">
     <div class="card overflow-hidden hover-img">
       <div class="position-relative">
         <a href="javascript:void(0)">
@@ -11,10 +11,10 @@
             alt="matdash-img"
           />
         </a>
-        <span
+        <!-- <span
           class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0"
           >2 min Read</span
-        >
+        > -->
         <img
           src="@/assets/images/profile/user-3.jpg"
           alt="matdash-img"
@@ -27,12 +27,13 @@
         />
       </div>
       <div class="card-body p-4">
-        <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm mt-3"
+        <!-- <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm mt-3"
           >Social</span
-        >
+        > -->
         <a class="d-block my-4 fs-5 text-dark fw-semibold link-primary" href=""
           >As yen tumbles, gadget-loving Japan goes for secondhand iPhones</a
         >
+
         <div class="d-flex align-items-center gap-4">
           <div class="d-flex align-items-center gap-2">
             <i class="ti ti-eye text-dark fs-5"></i>9,125
@@ -49,4 +50,15 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.blur-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.blur {
+  filter: blur(10px);
+  -webkit-filter: blur(10px); /* Safari 지원 */
+  pointer-events: none; /* 클릭 방지 */
+}
+</style>

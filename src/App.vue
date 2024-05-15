@@ -16,9 +16,16 @@ import AptDetailView from "./views/AptDetailView.vue";
 <template>
   <!--  Body Wrapper -->
 
-  <body class="page-wrapper w-100 h-100" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6"
-    data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed"
-    style="background-color: #f4f7fb">
+  <body
+    class="page-wrapper w-100 h-100"
+    id="main-wrapper"
+    data-layout="vertical"
+    data-navbarbg="skin6"
+    data-sidebartype="full"
+    data-sidebar-position="fixed"
+    data-header-position="fixed"
+    style="background-color: #f4f7fb"
+  >
     <Header></Header>
     <!-- <MainView /> -->
     <!-- <AptView />
@@ -38,7 +45,8 @@ import AptDetailView from "./views/AptDetailView.vue";
 
 @font-face {
   font-family: "omyu_pretty";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2") format("woff2");
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2")
+    format("woff2");
   font-weight: normal;
   font-style: normal;
 }
