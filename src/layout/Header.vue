@@ -84,7 +84,7 @@ const handleNavItemClicked = (path, item) => {
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: 'community' }"
+                :to="{ name: 'myFeed' }"
                 class="nav-link text-dark fs-6 me-2"
                 :class="{ 'fw-bolder active': activeNavItem === 'myFeed' }"
                 @click.native="handleNavItemClicked(null, 'myFeed')"

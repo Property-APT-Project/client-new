@@ -10,7 +10,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import NewPasswordView from "@/views/user/NewPasswordView.vue";
 import AptView from "@/views/AptView.vue";
 import AptDetailView from "@/views/AptDetailView.vue";
-
+import MyFeedView from "@/views/MyFeedView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +64,11 @@ const router = createRouter({
       path: "/apt-detail",
       name: "apt-detail",
       component: AptDetailView,
+    },
+    {
+      path: "/my-feed",
+      name: "myFeed",
+      component: MyFeedView,
     },
   ],
 });
