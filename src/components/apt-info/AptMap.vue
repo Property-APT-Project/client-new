@@ -15,6 +15,8 @@ const saleList = ref([])
 const complexList = ref([])
 const complexDongGroupList = ref([])
 
+const emit = defineEmits(['saleList', 'complexList'])
+
 const path = "http://localhost:8080/where-is-my-home/api/v1";
 
 function getAptSaleList(level, sLat, eLat, sLng, eLng){
@@ -23,7 +25,8 @@ function getAptSaleList(level, sLat, eLat, sLng, eLng){
 
     }).then((response) =>{
       saleList.value = response['data'];
-      console.log(saleList.value[0]);
+      emit('saleList', saleList.value);
+
     }).catch((response) => {
       console.log('매물 조회 실패');
     });
@@ -42,6 +45,7 @@ function getComplexList(level, sLat, eLat, sLng, eLng){
     }).then((response) =>{
       complexList.value = response['data'];
       console.log(complexList.value[0]);
+      emit('complexList', complexList.value);
     }).catch((response) => {
       console.log('단지 조회 실패');
     });

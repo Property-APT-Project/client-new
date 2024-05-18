@@ -11,29 +11,18 @@ const activeComplex = ref(false);
 
 const currInfo = ref(null);
 
-const complexInterestList = ref([
-  { id: id++, aptName: "APT NAME1", price: 2000, address: "강남구 역삼동" },
-  { id: id++, aptName: "APT NAME2", price: 2000, address: "강남구 역삼동" },
-  { id: id++, aptName: "APT NAME3", price: 2000, address: "강남구 역삼동" },
-  { id: id++, aptName: "APT NAME4", price: 2000, address: "강남구 역삼동" },
-]);
+const complexInterestList = ref([]);
 
-const complexList = ref([
-  { id: id++, aptName: "APT NAMEA", price: 2000, address: "강남구 역삼동" },
-  { id: id++, aptName: "APT NAMEB", price: 2000, address: "강남구 역삼동" },
-  { id: id++, aptName: "APT NAMEC", price: 2000, address: "강남구 역삼동" },
-  { id: id++, aptName: "APT NAMED", price: 2000, address: "강남구 역삼동" },
-]);
+const props = defineProps({
+  saleList:Object,
+  complexList:Array
+})
 
 const allAptList = ref([
   { id: id++, aptName: "APT NAME1", price: 2000, floor: 3, direction: "남향", interest: true },
   { id: id++, aptName: "APT NAME2", price: 2000, floor: 3, direction: "남향", interest: true },
   { id: id++, aptName: "APT NAME3", price: 2000, floor: 3, direction: "남향", interest: true },
   { id: id++, aptName: "APT NAME4", price: 2000, floor: 3, direction: "남향", interest: true },
-  { id: id++, aptName: "APT NAMEA", price: 2000, address: "강남구 역삼동", interest: false },
-  { id: id++, aptName: "APT NAMEB", price: 2000, address: "강남구 역삼동", interest: false },
-  { id: id++, aptName: "APT NAMEC", price: 2000, address: "강남구 역삼동", interest: false },
-  { id: id++, aptName: "APT NAMED", price: 2000, address: "강남구 역삼동", interest: false },
 ]);
 
 const aptInterestList = allAptList.value.filter((apt) => apt.interest);
@@ -124,7 +113,7 @@ watch(currInfo, (newInfo, prevInfo) => {
             ><apt-sale v-for="info in aptNonInterestList" :key="info.id" :info="info"
           /></span>
           <span v-else>
-            <apt-complex v-for="info in complexList" :key="info.id" :info="info" />
+            <apt-complex v-for="info in complexList" :key="info.aptName" :info="info" />
           </span>
         </ul>
       </div>

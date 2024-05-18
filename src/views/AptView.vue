@@ -1,17 +1,24 @@
 <script setup>
-import RankList from "@/components/main/RankList.vue";
-import FocusedMap from "@/components/common/FocusedMap.vue";
 import AptMap from "@/components/apt-info/AptMap.vue";
 import LeftSideVue from "@/components/apt-info/LeftSide.vue";
-import RightSideVue from "@/components/apt-info/RightSide.vue";
+
+import {ref} from 'vue';
+const saleList = ref([]);
+const complexList = ref([])
+
+
 </script>
 
 <template>
   <div class="body-wrapper ms-0 me-0">
     <div class="row" style="height: 100vh">
-      <LeftSideVue />
+      <LeftSideVue :saleList="saleList"
+      :complexList="complexList"
+      />
 
-      <AptMap />
+      <AptMap 
+      @saleList="(sales) => saleList = sales" 
+      @complexList="(complexes) => complexList = complexes" />
     </div>
   </div>
 </template>

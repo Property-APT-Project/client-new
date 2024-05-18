@@ -26,7 +26,7 @@ const props = defineProps({
           </div>
 
           <h6 class="">{{ info.price }} 만원</h6>
-          <p class="mb-0">{{ info.floor }} 층 / {{ info.direction }}</p>
+          <p class="mb-0">{{ info.floor }} 층 / {{ info.size }}</p>
         </div>
       </div>
     </a>
