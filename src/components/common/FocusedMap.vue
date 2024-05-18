@@ -15,6 +15,23 @@ const onLoadKakaoMap = (mapRef) => {
   const mapTypeControl = new kakao.maps.MapTypeControl();
   // 지도 타입 컨트롤을 지도에 표시합니다
   map.value.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+  kakao.maps.event.addListener(map.value, 'dragend', function (mouseEvent) {        
+    
+    // 지도 중심좌표를 얻어옵니다 
+    var latlng = map.value.getCenter(); 
+    
+    var message = '변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, ';
+    message += '경도는 ' + latlng.getLng() + ' 입니다';
+    console.log(message)
+
+    const level = map.value.getLevel();
+
+    const swLatLng = bounds.getSouthWest();
+// 영역의 북동쪽 좌표를 얻어옵니다
+const neLatLng = bounds.getNorthEast();
+    
+  });
 };
 const coordinate = {
   lat: 37.566826,
