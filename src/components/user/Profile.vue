@@ -4,6 +4,7 @@ import { onBeforeMount, ref } from "vue";
 import { useTokenStore } from "@/stores/token";
 import axios from "axios";
 import Logo from "./Logo.vue";
+import Cookies from "js-cookie";
 
 onBeforeMount(() => {
   sendData();
@@ -20,19 +21,21 @@ const formData = ref({
 });
 
 const presentData = ref({
-  email: "q@q",
-  name: "dsfdsf",
-  address: "서울특별시 용산구",
-  phoneNumber: "010-9999-1111",
+  email: "",
+  name: "",
+  address: "",
+  phoneNumber: "",
 });
 
 const isModify = ref(false);
 
 const token = useTokenStore();
-console.log(token);
+
 console.log(token.accessToken);
 console.log(token.refreshToken);
 async function sendData() {
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
   axios
     .get(VITE_APP_PROFILE, {
       headers: {
@@ -138,7 +141,7 @@ function base64(file) {
                 <img
                   src="@/assets/images/profile/user-1.jpg"
                   id="profileImage"
-                  class="card-img img-thumbnail profile-img"
+                  class="card-img img-thumbnail rounded-circle profile-img"
                   alt="..."
                 />
               </div>

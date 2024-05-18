@@ -11,6 +11,7 @@ import NewPasswordView from "@/views/user/NewPasswordView.vue";
 import AptView from "@/views/AptView.vue";
 import AptDetailView from "@/views/AptDetailView.vue";
 import MyFeedView from "@/views/MyFeedView.vue";
+import Cookies from "js-cookie";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,7 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: ProfileView,
+      meta: { requiresAuth: true },
     },
     {
       path: "/pw-service",
@@ -69,8 +71,22 @@ const router = createRouter({
       path: "/my-feed",
       name: "myFeed",
       component: MyFeedView,
+      meta: { requiresAuth: true },
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const token = Cookies.get("authToken");
+    if (!token) {
+      next({ name: "loginForm" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
