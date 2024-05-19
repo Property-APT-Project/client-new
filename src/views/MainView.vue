@@ -2,6 +2,11 @@
 import SearchBar from "@/components/common/SearchBar.vue";
 import NewsList from "@/components/main/NewsList.vue";
 import RankList from "@/components/main/RankList.vue";
+import axios from "axios";
+
+
+
+
 </script>
 
 <template>

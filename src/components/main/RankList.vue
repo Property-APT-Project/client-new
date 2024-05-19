@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import FocusedMap from "../common/FocusedMap.vue";
 import RankApt from "./rank/RankApt.vue";
+import axios from "axios";
 
 const cityName = ref("서울시 강서구");
 const id = ref(0);
@@ -10,6 +11,28 @@ const nameList = ref([
   { id: id.value++, aptName: "래미안" },
   { id: id.value++, aptName: "힐스테이트" },
 ]);
+
+const path = "https://land.naver.com/news/airsList.naver?baseDate=2024-05-19&page=1&size=3";
+
+
+const fetchNewsInfo = async () => {
+  console.log('Fetching URL:', path);
+ 
+  try {
+    const response = await axios.get(path);
+    console.log('API Response:', response);
+    if (response.data) {
+      console.log("response")
+      console.log(response.data.list)
+    } else {
+      console.log('No data received');
+    }
+  } catch (error) {
+    console.error('뉴스 조회 실패:', error.response ? error.response.data : error.message);
+  }
+};
+fetchNewsInfo();
+
 </script>
 
 <template>
