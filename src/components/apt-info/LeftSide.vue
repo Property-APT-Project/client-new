@@ -1,5 +1,6 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, toRef } from "vue";
+import axios from "axios";
 
 import AptSale from "@/components/apt-info/sales/AptSale.vue";
 import AptComplex from "@/components/apt-info/sales/AptComplex.vue";
@@ -14,20 +15,12 @@ const currInfo = ref(null);
 const complexInterestList = ref([]);
 
 const props = defineProps({
-  saleList:Object,
+  saleList:Array,
   complexList:Array
 })
 
-const allAptList = ref([
-  { id: id++, aptName: "APT NAME1", price: 2000, floor: 3, direction: "남향", interest: true },
-  { id: id++, aptName: "APT NAME2", price: 2000, floor: 3, direction: "남향", interest: true },
-  { id: id++, aptName: "APT NAME3", price: 2000, floor: 3, direction: "남향", interest: true },
-  { id: id++, aptName: "APT NAME4", price: 2000, floor: 3, direction: "남향", interest: true },
-]);
-
-const aptInterestList = allAptList.value.filter((apt) => apt.interest);
-
-const aptNonInterestList = allAptList.value.filter((apt) => !apt.interest);
+const aptInterestList = ref([]);
+const aptNonInterestList = ref([]);
 
 const isSelectComplex = ref(false);
 
@@ -43,17 +36,29 @@ const activateComplex = () => {
   activeComplex.value = true;
 };
 
-const aptName = ref("APT NAME1");
-let selectedAptList = allAptList.value.filter((apt) => apt.aptName == aptName.value);
+const aptName = ref("");
+const selectedAptList = ref([]);
+// selectedAptList = saleList.value.filter((apt) => apt.aptName == aptName.value);
 
 watch(currInfo, (newInfo, prevInfo) => {
   console.log(newInfo);
   isSelectComplex.value = true;
   activeSale.value = true;
   activeComplex.value = false;
+
+
   aptName.value = newInfo.aptName;
-  console.log(aptName.value);
-  selectedAptList = allAptList.value.filter((apt) => apt.aptName == aptName.value);
+
+  const path = "http://localhost:8080/where-is-my-home/api/v1";
+
+  axios.get(path+`/house-info/sale-articles/complex/${newInfo.aptName}?dongCode=${newInfo.dongCode.substr(0, 8)}`,{
+
+  }).then((response) =>{
+    selectedAptList.value = response['data'];
+
+  }).catch((response) => {
+    console.log('매물 조회 실패');
+  });
 });
 </script>
 
@@ -78,42 +83,30 @@ watch(currInfo, (newInfo, prevInfo) => {
       <div class="sidebar-nav scrollspy-example" style="overflow: scroll; height: 80%;">
         <ul id="sidebarnav">
           <li v-if="!isSelectComplex" class="nav-small-cap">
-            <iconify-icon
-              icon="solar:menu-dots-linear"
-              class="nav-small-cap-icon fs-4"
-            ></iconify-icon>
+            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
             <span class="hide-menu">Interest</span>
           </li>
           <span v-if="isSelectComplex"> </span>
-          <span v-else-if="activeSale"
-            ><apt-sale v-for="info in aptInterestList" :key="info.id" :info="info" />
+          <span v-else-if="activeSale"><apt-sale v-for="info in aptInterestList" :key="info.id" :info="info" />
           </span>
           <span v-else>
-            <apt-complex
-              v-for="info in complexInterestList"
-              @response="(info) => (currInfo = info)"
-              :key="info.id"
-              :info="info"
-            />
+            <apt-complex v-for="info in complexInterestList" @response="(info) => (currInfo = info)" :key="info.aptName"
+              :info="info" />
           </span>
           <li v-if="!isSelectComplex">
             <span class="sidebar-divider lg"></span>
           </li>
           <li class="nav-small-cap">
-            <iconify-icon
-              icon="solar:menu-dots-linear"
-              class="nav-small-cap-icon fs-4"
-            ></iconify-icon>
+            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
             <span class="hide-menu">LIST</span>
           </li>
           <span v-if="isSelectComplex">
             <apt-sale v-for="info in selectedAptList" :key="info.id" :info="info" />
           </span>
-          <span v-else-if="activeSale"
-            ><apt-sale v-for="info in aptNonInterestList" :key="info.id" :info="info"
-          /></span>
+          <span v-else-if="activeSale"><apt-sale v-for="info in saleList" :key="info.id" :info="info" /></span>
           <span v-else>
-            <apt-complex v-for="info in complexList" :key="info.aptName" :info="info" />
+            <apt-complex v-for="info in complexList" @response="(info) => (currInfo = info)" :key="info.aptName"
+              :info="info" />
           </span>
         </ul>
       </div>

@@ -17,13 +17,23 @@ function clickComplexButton(info) {
           <div class="col-5 d-flex w-100" style="object-fit: cover;">
             <img v-if="info.thumbImg != '@/assets/images/no-image.jpeg'" class="rounded w-100 align-middle"
               :src="info.thumbImg" alt="prd1" />
-            <img v-else class="rounded w-100 align-middle" src="@/assets/images/no-image.jpeg" alt="prd1" />
+            <img v-else class="rounded w-100 align-middle" src="https://d1774jszgerdmk.cloudfront.net/512/default_img_horizon.png" alt="prd1" />
           </div>
         </div>
         <div class="col-7 m-0">
+
           <h5 class="omyu_pretty">{{ info.aptName }}</h5>
 
           <h6>{{ info.address }}</h6>
+          <div class="col-3 p-0 m-0 align-items-center w-100">
+                <button
+                  class="p-1 w-100 rounded-pill bg-light text-gray align-self-center"
+                  type="submit"
+                  style="font-size: 12px; border: none"
+                >
+                  실거래가 조회
+                </button>
+              </div>
         </div>
       </div>
     </a>
