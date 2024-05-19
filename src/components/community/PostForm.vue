@@ -2,32 +2,47 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 const formData = ref({
-  subject: "",
+  imgURL: "",
+  title: "",
   content: "",
 });
 
 function resetForm() {
-  formData.value.subject = "";
+  formData.value.title = "";
   formData.value.content = "";
 }
-const { VITE_APP_API_URL, VITE_APP_LOGIN, VITE_APP_PROFILE } = import.meta.env;
+const { VITE_APP_API_NEW_POST } = import.meta.env;
 const router = useRouter();
 async function sendData() {
-  console.log(formData.value);
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
   await axios
-    .post(VITE_APP_LOGIN, formData.value)
+    .post(VITE_APP_API_NEW_POST, formData.value, {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    })
     .then((response) => {
       console.log("SUCCESS");
       console.log(response.data);
-      // TODO
-      router.replace({ name: "community" });
+      Swal.fire({
+        // title: "",
+        text: "등록되었습니다.",
+        icon: "success",
+      }).then(() => {});
     })
     .catch((error) => {
       console.error("Error:", error);
-      router.replace({ name: "community" });
     });
+}
+
+function handleSubmit() {
+  sendData();
+  resetForm();
 }
 </script>
 
@@ -61,9 +76,9 @@ async function sendData() {
                   <label for="제목" class="form-label">제목</label>
                   <input
                     type="text"
-                    v-model="formData.subject"
+                    v-model="formData.title"
                     class="form-control"
-                    id="subject"
+                    id="title"
                   />
                 </div>
                 <div class="mb-3">
@@ -90,13 +105,8 @@ async function sendData() {
             닫기
           </button>
           <button
-            @click="
-              () => {
-                sendData();
-                resetForm();
-              }
-            "
-            :disabled="!formData.subject || !formData.content"
+            @click="handleSubmit"
+            :disabled="!formData.title || !formData.content"
             type="button"
             class="btn btn-primary"
             data-bs-dismiss="modal"

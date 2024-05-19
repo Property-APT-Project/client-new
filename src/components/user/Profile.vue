@@ -1,23 +1,34 @@
 <script setup>
 import Signup from "./Signup.vue";
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 import { useTokenStore } from "@/stores/token";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import Logo from "./Logo.vue";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
+const router = useRouter();
 onBeforeMount(() => {
-  sendData();
+  getData();
   // presentData.value = formData.value
 });
 
-const { VITE_APP_API_URL, VITE_APP_LOGIN, VITE_APP_PROFILE } = import.meta.env;
+const {
+  VITE_APP_API_URL,
+  VITE_APP_LOGIN,
+  VITE_APP_PROFILE,
+  VITE_APP_API_MEMBER_UPLOAD,
+  VITE_APP_MEMBER_DELETE,
+  VITE_APP_LOGOUT,
+} = import.meta.env;
 // const router = useRouter();
 const formData = ref({
   email: "",
   name: "",
   address: "",
   phoneNumber: "",
+  imgURL: "",
 });
 
 const presentData = ref({
@@ -25,6 +36,7 @@ const presentData = ref({
   name: "",
   address: "",
   phoneNumber: "",
+  imgURL: "",
 });
 
 const isModify = ref(false);
@@ -33,7 +45,7 @@ const token = useTokenStore();
 
 console.log(token.accessToken);
 console.log(token.refreshToken);
-async function sendData() {
+async function getData() {
   const tokenCookie = Cookies.get("authToken");
   const token = JSON.parse(tokenCookie);
   axios
@@ -55,9 +67,41 @@ async function sendData() {
     });
 }
 
+async function sendData() {
+  if (isImageChanged) {
+    formData.value.imgURL = imgURL.value;
+  }
+  if (isAddressChanged) {
+    formData.value.address =
+      address.value.zonecode +
+      " " +
+      address.value.roadAddress +
+      " " +
+      address.value.detailAddress;
+  }
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
+  console.log(formData.value);
+  axios
+    .put(VITE_APP_PROFILE, formData.value, {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    })
+    .then((response) => {
+      console.log("SUCCESS");
+      console.log(response.data);
+      getData();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
 function resetData() {
   console.log("RESET DATA");
   Object.assign(formData.value, presentData.value);
+
   setFalse;
   // formData.value = presentData.value
 }
@@ -66,7 +110,8 @@ function changeState() {
   isModify.value = !isModify.value;
 }
 
-const data = ref({
+const isAddressChanged = ref("false");
+const address = ref({
   zonecode: "",
   roadAddress: "",
   detailAddress: "",
@@ -76,17 +121,35 @@ function openPostcode() {
   new window.daum.Postcode({
     oncomplete: (d) => {
       // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분
-      data.value.zonecode = d.zonecode;
-      data.value.roadAddress = d.roadAddress;
+      address.value.zonecode = d.zonecode;
+      address.value.roadAddress = d.roadAddress;
+      isAddressChanged.value = true;
     },
   }).open();
 }
 
 const file = ref("");
+const imgURL = ref("");
 async function uploadImage(event) {
   const files = event.target?.files;
   file.value = files[0];
   await base64(file.value);
+
+  const form = new FormData();
+  form.append("file", file.value);
+  await axios
+    .post(VITE_APP_API_MEMBER_UPLOAD, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      imgURL.value = response.data;
+      console.log("Image uploaded successfully:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 const isImageChanged = ref(false);
@@ -100,6 +163,7 @@ const setModifyTrue = () => {
 const setFalse = () => {
   isImageChanged.value = false;
   isModify.value = false;
+  isAddressChanged.value = false;
   console.log(isImageChanged.value);
 };
 function base64(file) {
@@ -113,6 +177,123 @@ function base64(file) {
 
     a.readAsDataURL(file);
     setTrue();
+  });
+}
+
+// PHONENUMBER START //
+const phoneValid = ref(true);
+const showPhoneHint = ref(false);
+
+const validatePhoneNumber = (phoneNumber) => {
+  const phoneRegex = /^010-[0-9]{4}-[0-9]{4}$/;
+  return phoneRegex.test(phoneNumber);
+};
+
+watch(
+  () => formData.value.phoneNumber,
+  (newPhoneNumber) => {
+    phoneValid.value = validatePhoneNumber(newPhoneNumber);
+    showPhoneHint.value = newPhoneNumber.length > 0 && !phoneValid.value;
+  }
+);
+// PHONENUMBER END //
+
+function validateForm() {
+  phoneValid.value =
+    !formData.value.phoneNumber ||
+    validatePhoneNumber(formData.value.phoneNumber);
+
+  showPhoneHint.value =
+    formData.value.phoneNumber.length > 0 && !phoneValid.value;
+
+  return phoneValid.value;
+}
+
+const handleSubmit = () => {
+  if (validateForm()) {
+    if (isImageChanged.value) {
+      resetData();
+    }
+
+    sendData();
+    setFalse();
+  } else {
+    if (formData.value.phoneNumber.length > 0 && !phoneValid.value) {
+      document.getElementById("phoneNumber").classList.add("shake");
+      setTimeout(() => {
+        document.getElementById("phoneNumber").classList.remove("shake");
+      }, 500);
+    }
+  }
+};
+
+const leave = async () => {
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
+  console.log(token.accessToken);
+  axios
+    .delete(VITE_APP_MEMBER_DELETE, {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    })
+    .then((response) => {
+      console.log("SUCCESS");
+      console.log(response.data);
+      Swal.fire({
+        text: "탈퇴 되었습니다.",
+        icon: "success",
+      });
+      router.replace({ name: "root" });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      Swal.fire({
+        text: "에러가 발생하였습니다.",
+        icon: "error",
+      });
+    });
+};
+
+function handleLogout() {
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
+  console.log(token);
+  axios
+    .post(VITE_APP_LOGOUT, null, {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    })
+    .then((response) => {
+      console.log("로그아웃 완료");
+      console.log(response.data);
+      Cookies.remove("authToken");
+      // TODO
+      router.replace({ name: "root" });
+    })
+    .catch((error) => {
+      console.log("로그아웃 실패");
+      console.error("Error:", error);
+      // router.replace({ name: "community" });
+    });
+}
+
+function handleLeave() {
+  Swal.fire({
+    title: "정말로 탈퇴하시겠습니까?",
+    text: "모든 정보가 삭제되며 돌이킬 수 없습니다.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "네, 탈퇴하겠습니다",
+    cancelButtonText: "아니오, 하지않겠습니다",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      handleLogout();
+      leave();
+    }
   });
 }
 </script>
@@ -139,9 +320,9 @@ function base64(file) {
               <!-- <div class="card"> -->
               <div class="d-flex card-body justify-content-center p-3">
                 <img
-                  src="@/assets/images/profile/user-1.jpg"
+                  :src="`${VITE_APP_API_MEMBER_UPLOAD}/${presentData.imgURL}`"
                   id="profileImage"
-                  class="card-img img-thumbnail rounded-circle profile-img"
+                  class="card-img img-thumbnail rounded profile-img"
                   alt="..."
                 />
               </div>
@@ -180,7 +361,7 @@ function base64(file) {
               <div class="card-body"> -->
             <div class="col-md-8">
               <Logo />
-              <div class="form-label">기본 보안 설정</div>
+              <div v-if="!isModify" class="form-label">기본 보안 설정</div>
               <div
                 v-if="!isModify"
                 class="mb-2 d-flex shadow rounded justify-content-between align-middle full-width-flex-pass"
@@ -188,7 +369,7 @@ function base64(file) {
                 <label for="password" class="form-label pt-2">비밀번호</label>
                 <div class="">
                   <router-link
-                    :to="{ name: 'pwService' }"
+                    :to="{ name: 'newPW' }"
                     class="btn btn-light p-1 text-primary"
                   >
                     변경
@@ -251,7 +432,7 @@ function base64(file) {
                             class="form-control mb-2"
                             type="text"
                             placeholder="우편번호"
-                            v-model="data.zonecode"
+                            v-model="address.zonecode"
                             readonly
                           />
                         </div>
@@ -269,7 +450,7 @@ function base64(file) {
                         <input
                           class="col form-control"
                           type="text"
-                          v-model="data.roadAddress"
+                          v-model="address.roadAddress"
                           placeholder="주소"
                           readonly
                         />
@@ -278,7 +459,7 @@ function base64(file) {
                         <input
                           class="col form-control"
                           type="text"
-                          v-model="data.detailAddress"
+                          v-model="address.detailAddress"
                           placeholder="상세주소"
                         />
                       </div>
@@ -294,6 +475,7 @@ function base64(file) {
                     >
                     <input
                       v-show="isModify"
+                      v-model="formData.phoneNumber"
                       type="tel"
                       class="form-control"
                       id="phoneNumber"
@@ -301,6 +483,9 @@ function base64(file) {
                     />
                     <div v-show="!isModify" class="">
                       {{ presentData.phoneNumber }}
+                    </div>
+                    <div v-if="showPhoneHint && !phoneValid" class="phone-hint">
+                      휴대폰 번호는 010-XXXX-XXXX 형식이어야 합니다.
                     </div>
                   </div>
                 </div>
@@ -313,18 +498,14 @@ function base64(file) {
                     }
                   "
                   v-show="!isModify && !isImageChanged"
-                  class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2"
+                  class="btn btn-primary w-100 py-8 fs-4 rounded-2"
                 >
                   회원정보 수정
                 </button>
                 <div class="d-flex">
                   <!-- <div> -->
                   <button
-                    @click="
-                      () => {
-                        setFalse();
-                      }
-                    "
+                    @click="handleSubmit"
                     v-show="isModify || isImageChanged"
                     class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2 ms-3 me-3"
                   >
@@ -345,6 +526,9 @@ function base64(file) {
                     취소
                   </button>
                   <!-- </div> -->
+                </div>
+                <div class="d-flex justify-content-center">
+                  <span @click="handleLeave" class="clickable p-1"> 탈퇴 </span>
                 </div>
                 <div class="d-flex justify-content-around"></div>
               </form>
@@ -388,5 +572,33 @@ function base64(file) {
   /* 내부 여백 추가 */
   border-radius: 5px;
   /* 모서리 둥글게 */
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.5s;
+  border: 1px solid red;
+}
+
+.clickable {
+  cursor: pointer;
+  color: #d2d2d2; /* 원하는 색상으로 변경 */
 }
 </style>

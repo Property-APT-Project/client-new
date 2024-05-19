@@ -1,4 +1,34 @@
-<script setup></script>
+<script setup>
+import { defineProps } from "vue";
+import PostDetail from "./PostDetail.vue";
+
+const props = defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+});
+
+// 시간 데이터를 포맷하는 함수
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const formattedDate = date
+    .toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .replace(/\./g, ". ");
+
+  const formattedTime = date.toLocaleTimeString("ko-KR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  return `${formattedDate} ${formattedTime}`;
+}
+</script>
 
 <template>
   <div class="">
@@ -30,19 +60,24 @@
         <!-- <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm mt-3"
           >Social</span
         > -->
-        <a class="d-block my-4 fs-5 text-dark fw-semibold link-primary" href=""
-          >As yen tumbles, gadget-loving Japan goes for secondhand iPhones</a
+        <router-link
+          :to="{ name: 'postDetail', params: { id: post.id } }"
+          class="d-block my-4 fs-5 text-dark fw-semibold link-primary"
+          href=""
+          >{{ post.title }}</router-link
         >
 
         <div class="d-flex align-items-center gap-4">
           <div class="d-flex align-items-center gap-2">
-            <i class="ti ti-eye text-dark fs-5"></i>9,125
+            <i class="ti ti-eye text-dark fs-5"></i> {{ post.hit }}
           </div>
           <div class="d-flex align-items-center gap-2">
-            <i class="ti ti-message-2 text-dark fs-5"></i>3
+            <i class="ti ti-message-2 text-dark fs-5"></i>
+            {{ post.comments.length }}
           </div>
           <div class="d-flex align-items-center fs-2 ms-auto">
-            <i class="ti ti-point text-dark"></i>Mon, Dec 19
+            <i class="ti ti-point text-dark"></i
+            >{{ formatDate(post.createTime) }}
           </div>
         </div>
       </div>

@@ -48,8 +48,8 @@ const router = createRouter({
       component: CommunityView,
     },
     {
-      path: "/post",
-      name: "post",
+      path: "/posts/:id",
+      name: "postDetail",
       component: PostDetailView,
     },
     {

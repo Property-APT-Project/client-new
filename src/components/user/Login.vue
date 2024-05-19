@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { useTokenStore } from "@/stores/token";
 import Logo from "./Logo.vue";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 const { VITE_APP_API_URL, VITE_APP_LOGIN, VITE_APP_PROFILE } = import.meta.env;
 const router = useRouter();
@@ -15,6 +16,15 @@ const formData = ref({
 
 const token = useTokenStore();
 const errMsg = ref("");
+const rememberMe = ref(true);
+
+onMounted(() => {
+  const savedEmail = localStorage.getItem("savedEmail");
+  if (savedEmail) {
+    formData.value.email = savedEmail;
+    rememberMe.value = true;
+  }
+});
 
 async function login() {
   console.log(VITE_APP_API_URL);
@@ -23,12 +33,28 @@ async function login() {
     .then((response) => {
       console.log("SUCCESS");
       // console.log(response.data);
-      router.replace({ name: "root" });
+
       const token = response.data;
       Cookies.set("authToken", JSON.stringify(token), {
         expires: 7,
         sameSite: "strict",
       });
+
+      console.log(rememberMe.value);
+      if (rememberMe.value) {
+        localStorage.setItem("savedEmail", formData.value.email);
+      } else {
+        localStorage.removeItem("savedEmail");
+      }
+
+      Swal.fire({
+        // title: "",
+        text: "로그인 되었습니다.",
+        icon: "success",
+      }).then(() => {
+        router.replace({ name: "root" });
+      });
+
       console.log("로그인 성공 및 쿠키 설정");
       // token.accessToken = response.data.accessToken;
       // token.refreshToken = response.data.refreshToken;
@@ -108,6 +134,7 @@ async function login() {
                     >
                       <div class="form-check">
                         <input
+                          v-model="rememberMe"
                           class="form-check-input primary"
                           type="checkbox"
                           value=""
@@ -122,7 +149,7 @@ async function login() {
                         </label>
                       </div>
                     </div>
-                    <div class="mb-2 text-center text-danger" v-if="errMsg">
+                    <div class="mb-2 text-center fail" v-if="errMsg">
                       {{ errMsg }}
                     </div>
                     <button
@@ -171,5 +198,9 @@ input::placeholder {
 
 .border-right {
   border-right: 1px solid #d5ccf7;
+}
+
+.fail {
+  color: red;
 }
 </style>

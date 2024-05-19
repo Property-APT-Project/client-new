@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const collapseRef = ref(null);
 const activeNavItem = ref("main");
@@ -22,6 +24,31 @@ const handleNavItemClicked = (path, item) => {
     router.push(path);
   }
 };
+
+const { VITE_APP_LOGOUT } = import.meta.env;
+function handleLogout() {
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
+  console.log(token);
+  axios
+    .post(VITE_APP_LOGOUT, null, {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    })
+    .then((response) => {
+      console.log("로그아웃 완료");
+      console.log(response.data);
+      Cookies.remove("authToken");
+      // TODO
+      router.replace({ name: "root" });
+    })
+    .catch((error) => {
+      console.log("로그아웃 실패");
+      console.error("Error:", error);
+      // router.replace({ name: "community" });
+    });
+}
 </script>
 
 <template>
@@ -126,13 +153,13 @@ const handleNavItemClicked = (path, item) => {
                 </router-link>
               </div>
               <div class="w-100 limited-width">
-                <router-link
-                  :to="{ name: 'profile' }"
+                <button
+                  @click="handleLogout"
                   class="rounded-2 d-flex align-items-center dropdown-item"
                 >
                   <i class="fa fa-sign-out ms-1 fs-4"></i>
                   <p class="mb-0 ms-2 fs-3">Logout</p>
-                </router-link>
+                </button>
               </div>
               <!-- <a
                 href="./authentication-login.html"

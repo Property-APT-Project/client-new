@@ -1,6 +1,8 @@
 <script setup>
 import PostForm from "/src/components/community/PostForm.vue";
 import PostCard from "/src/components/community/PostCard.vue";
+import PostCardList from "/src/components/community/PostCardList.vue";
+
 import { ref, onMounted } from "vue";
 const handleScroll = () => {
   const bottomOfWindow =
@@ -51,12 +53,13 @@ onMounted(() => {
       <PostForm />
       <div class="ms-2 me-2">
         <div class="row">
+          <PostCardList />
+          <!-- <PostCard class="col-lg-4 col-md-6 col-sm-12" />
           <PostCard class="col-lg-4 col-md-6 col-sm-12" />
           <PostCard class="col-lg-4 col-md-6 col-sm-12" />
           <PostCard class="col-lg-4 col-md-6 col-sm-12" />
           <PostCard class="col-lg-4 col-md-6 col-sm-12" />
-          <PostCard class="col-lg-4 col-md-6 col-sm-12" />
-          <PostCard class="col-lg-4 col-md-6 col-sm-12" />
+          <PostCard class="col-lg-4 col-md-6 col-sm-12" /> -->
         </div>
         <div class="row"></div>
       </div>

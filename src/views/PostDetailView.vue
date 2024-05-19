@@ -1,21 +1,16 @@
 <script setup>
 import PostDetail from "@/components/community/PostDetail.vue";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const postId = ref(Number(route.params.id));
 </script>
 
 <template>
-  <div
-    class="page-wrapper"
-    id="main-wrapper"
-    data-layout="vertical"
-    data-navbarbg="skin6"
-    data-sidebartype="full"
-    data-sidebar-position="fixed"
-    data-header-position="fixed"
-  >
-    <div
-      class="position-relative p-3 text-bg-light min-vh-100 align-items-center justify-content-center"
-    >
-      <PostDetail />
+  <div class="body-wrapper ms-0 me-0">
+    <div class="body-wrapper-inner mb-6 container-fluid w-100">
+      <PostDetail :postId="postId" />
     </div>
   </div>
 </template>

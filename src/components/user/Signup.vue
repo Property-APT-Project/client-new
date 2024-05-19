@@ -262,7 +262,7 @@ const handleSubmit = () => {
                       <div class="row">
                         <div class="col">
                           <img
-                            src="http://localhost:8080/where-is-my-home/members/upload/default.png"
+                            :src="VITE_APP_API_DEFUALT_PROFILE_IMAGE"
                             id="profileImage"
                             class="card-img img-thumbnail rounded"
                             alt="..."
