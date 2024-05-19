@@ -1,12 +1,23 @@
 <script setup>
+import { useRoute, useRouter } from 'vue-router';
+
 const props = defineProps({
   info: Object,
 });
+
+const router = useRouter();
+const goToDetail = () => {
+  router.push({
+    path: '/apt-detail',
+    query: { info: JSON.stringify(props.info) } // info 객체를 JSON 문자열로 변환하여 전달
+  });
+};
+
 </script>
 
 <template>
-  <li class="sidebar-item mb-3">
-    <a class="" href="/apt-detail">
+  <li class="sidebar-item mb-3" @click="goToDetail">
+    <a class="" href="#">
       <div class="row bg-gray p-3" style="background-color: white">
         <div class="col-5 d-flex">
           <img v-if="info.img1 != '@/assets/images/no-image.jpeg'" class="rounded w-100 align-middle"

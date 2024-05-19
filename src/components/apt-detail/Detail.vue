@@ -1,6 +1,15 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+    complex: Object
+});
+
+console.log("Detail")
+console.log(props.complex)
+
+</script>
 
 <template>
+  <span v-if="complex != null">
   <div class="card w-100">
     <div class="card-body p-4">
       <h5 class="card-title fw-semibold mb-4">단지 정보</h5>
@@ -14,7 +23,7 @@
                 </div>
               </td>
               <td>
-                <span>892세대(공공임대 6세대 포함, 총15개동)</span>
+                <span>{{complex.houseHoldCount}}세대(총{{complex.totalDongCount}}개동)</span>
               </td>
             </tr>
 
@@ -25,7 +34,7 @@
                 </div>
               </td>
               <td>
-                <span>15층/26층</span>
+                <span>{{complex.lowFloor}}층/{{complex.highFloor}}층</span>
               </td>
             </tr>
 
@@ -36,62 +45,7 @@
                 </div>
               </td>
               <td>
-                <span>2009년 08월 26일</span>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="ps-0">
-                <div class="d-flex align-items-center gap-6">
-                  <h6 class="mb-0">용적률</h6>
-                </div>
-              </td>
-              <td>
-                <span>247%</span>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="ps-0">
-                <div class="d-flex align-items-center gap-6">
-                  <h6 class="mb-0">건폐율</h6>
-                </div>
-              </td>
-              <td>
-                <span>18%</span>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="ps-0">
-                <div class="d-flex align-items-center gap-6">
-                  <h6 class="mb-0">건설사</h6>
-                </div>
-              </td>
-              <td>
-                <span>삼성물산(주)</span>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="ps-0">
-                <div class="d-flex align-items-center gap-6">
-                  <h6 class="mb-0">난방</h6>
-                </div>
-              </td>
-              <td>
-                <span>지역난방, 열병합</span>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="ps-0">
-                <div class="d-flex align-items-center gap-6">
-                  <h6 class="mb-0">관리사무소</h6>
-                </div>
-              </td>
-              <td>
-                <span>031-217-0887</span>
+                <span>{{ complex.useApproveYmd.substr(0,4) }}년 {{ complex.useApproveYmd.substr(4,2) }}월</span>
               </td>
             </tr>
 
@@ -102,12 +56,12 @@
                 </div>
               </td>
               <td>
-                <span>경기도 수원시 팔달구 인계동 384</span>
+                <span>{{ complex.address }} {{ complex.dongAddress }}</span>
               </td>
             </tr>
             <tr>
               <td>
-                <span>경기도 수원시 팔달구 권광로 246</span>
+                <span>{{ complex.roadAddress }}</span>
               </td>
             </tr>
 
@@ -118,7 +72,7 @@
                 </div>
               </td>
               <td>
-                <span>85㎡, 113B㎡, 113C㎡, 114A㎡, 142㎡, 155㎡</span>
+                <span>{{ complex.pyoengNames }}</span>
               </td>
             </tr>
           </tbody>
@@ -126,6 +80,7 @@
       </div>
     </div>
   </div>
+</span>
 </template>
 
 <style scoped></style>
