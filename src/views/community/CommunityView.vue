@@ -2,8 +2,10 @@
 import PostForm from "/src/components/community/PostForm.vue";
 import PostCard from "/src/components/community/PostCard.vue";
 import PostCardList from "/src/components/community/PostCardList.vue";
-
+import Cookies from "js-cookie";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
 const handleScroll = () => {
   const bottomOfWindow =
     window.innerHeight + window.scrollY >=
@@ -12,8 +14,15 @@ const handleScroll = () => {
     // loadPosts();
   }
 };
-
+const showButton = ref(false);
+const isAuthenticated = ref(false);
+const router = useRouter();
 onMounted(() => {
+  const token = Cookies.get("authToken");
+  if (token) {
+    showButton.value = true;
+    isAuthenticated.value = true;
+  }
   window.addEventListener("scroll", handleScroll);
   // loadPosts();
 });
@@ -36,6 +45,7 @@ onMounted(() => {
     <div class="body-wrapper-inner mb-6 container-fluid w-100">
       <div class="mb-3 d-flex justify-content-center fixed-bottom">
         <button
+          v-if="showButton"
           class="mt-3 responsive-button btn btn-success text-nowrap shadow-lg fs-3 text-center rounded-4"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
@@ -50,6 +60,7 @@ onMounted(() => {
           <i class="fa-solid fa-lock"></i>
         </router-link>
       </div> -->
+
       <PostForm />
       <div class="ms-2 me-2">
         <div class="row">

@@ -1,8 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/user";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
+
+const userStore = useUserStore();
 
 const collapseRef = ref(null);
 const activeNavItem = ref("main");
@@ -25,29 +29,45 @@ const handleNavItemClicked = (path, item) => {
   }
 };
 
-const { VITE_APP_LOGOUT } = import.meta.env;
+const { VITE_APP_API_MEMBER_UPLOAD, VITE_APP_LOGOUT } = import.meta.env;
 function handleLogout() {
-  const tokenCookie = Cookies.get("authToken");
-  const token = JSON.parse(tokenCookie);
-  console.log(token);
-  axios
-    .post(VITE_APP_LOGOUT, null, {
-      headers: {
-        Authorization: "Bearer " + token.accessToken,
-      },
+  // const tokenCookie = Cookies.get("authToken");
+  // const token = JSON.parse(tokenCookie);
+  // console.log(token);
+  // axios
+  //   .post(VITE_APP_LOGOUT, null, {
+  //     headers: {
+  //       Authorization: "Bearer " + token.accessToken,
+  //     },
+  //   })
+  //   .then((response) => {
+  //     console.log("로그아웃 완료");
+  //     console.log(response.data);
+  //     Cookies.remove("authToken");
+  //     // TODO
+  //     router.replace({ name: "root" });
+  //   })
+  //   .catch((error) => {
+  //     console.log("로그아웃 실패");
+  //     console.error("Error:", error);
+  //     // router.replace({ name: "community" });
+  //   });
+
+  userStore.logout().then(() => {
+    Swal.fire({
+      // title: "",
+      text: "로그아웃 되었습니다.",
+      icon: "success",
     })
-    .then((response) => {
-      console.log("로그아웃 완료");
-      console.log(response.data);
-      Cookies.remove("authToken");
-      // TODO
-      router.replace({ name: "root" });
-    })
-    .catch((error) => {
-      console.log("로그아웃 실패");
-      console.error("Error:", error);
-      // router.replace({ name: "community" });
-    });
+      .then(() => {
+        router.replace({ name: "root" });
+      })
+      .catch((error) => {
+        console.log("로그아웃 실패");
+        console.error("Error:", error);
+        throw error;
+      });
+  });
 }
 </script>
 
@@ -122,24 +142,52 @@ function handleLogout() {
           </ul>
         </div>
 
-        <div class="ms-3 d-flex justify-content-end">
+        <div
+          class="profile-card p-2 shadow-sm rounded d-flex align-items-center"
+        >
           <a
+            v-if="userStore.user"
             class="nav-link"
             href="javascript:void(0)"
             id="drop2"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <img
-              src="@/assets/images/profile/user-1.jpg"
-              alt=""
-              width="35"
-              height="35"
-              class="rounded-circle"
-            />
+            <div class="d-flex align-items-center">
+              <img
+                v-if="userStore.user"
+                :src="`${VITE_APP_API_MEMBER_UPLOAD}/${userStore.user.imgURL}`"
+                alt=""
+                width="35"
+                height="35"
+                class="rounded-circle"
+              />
+              <!-- <img
+                v-else
+                :src="VITE_APP_API_DEFUALT_PROFILE_IMAGE"
+                alt=""
+                width="35"
+                height="35"
+                class="rounded-circle"
+              /> -->
+              <div class="ms-1 text-black">
+                {{ userStore.user.name }} 님
+                <i class="fa-solid fa-caret-down"></i>
+              </div>
+            </div>
           </a>
+
+          <router-link
+            v-else
+            :to="{ name: 'loginForm' }"
+            class="ms-1 text-black"
+          >
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span class="ms-1 me-1"> 로그인 </span>
+          </router-link>
+
           <div
-            class="dropdown-menu dropdown-menu-end animate slideIn dropdown-menu-animate-up"
+            class="me-2 mt-n1 dropdown-menu dropdown-menu-end animate slideIn dropdown-menu-animate-up"
             aria-labelledby="drop2"
           >
             <div class="message-body">
@@ -204,5 +252,17 @@ function handleLogout() {
 
 .no-transition {
   transition: none !important;
+}
+
+.profile-card {
+  max-width: 200px;
+}
+
+.rounded-circle {
+  object-fit: cover;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }
 </style>

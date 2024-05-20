@@ -1,5 +1,6 @@
 import { useKakao } from "vue3-kakao-maps/@utils";
 import { createApp } from "vue";
+import piniaPersistedstate from "pinia-plugin-persistedstate";
 import { createPinia } from "pinia";
 
 // vue-markdown-editor start //
@@ -35,7 +36,10 @@ import router from "./router";
 const app = createApp(App);
 useKakao("5e28e613a6f651bac00ca7d7b68578eb");
 
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(piniaPersistedstate);
+app.use(pinia);
+
 app.use(router);
 app.use(VueMarkdownEditor);
 app.use(VMdPreview);

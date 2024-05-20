@@ -8,14 +8,8 @@ const posts = ref([]);
 const { VITE_APP_API_POST } = import.meta.env;
 
 onMounted(() => {
-  const tokenCookie = Cookies.get("authToken");
-  const token = JSON.parse(tokenCookie);
   axios
-    .get(VITE_APP_API_POST, {
-      headers: {
-        Authorization: "Bearer " + token.accessToken,
-      },
-    })
+    .get(VITE_APP_API_POST)
     .then((response) => {
       posts.value = response.data;
       console.log(posts.value);
@@ -27,9 +21,37 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <PostCard v-for="post in posts" :key="post.id" :post="post" />
+  <div class="container">
+    <div class="row justify-content-center">
+      <div
+        class="d-flex justify-content-center col-xl-6 col-lg-8 col-md-10 col-sm-12"
+        v-for="post in posts"
+        :key="post.id"
+      >
+        <PostCard :post="post" />
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  margin-top: 20px;
+}
+
+@media (min-width: 1200px) {
+  .card {
+    max-width: 900px; /* 카드의 최대 너비 설정 */
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1400px) {
+  .card {
+    max-width: 800px; /* 카드의 최대 너비를 더 작게 설정 */
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+</style>

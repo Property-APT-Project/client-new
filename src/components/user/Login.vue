@@ -6,6 +6,7 @@ import { useTokenStore } from "@/stores/token";
 import Logo from "./Logo.vue";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import { useUserStore } from "@/stores/user";
 
 const { VITE_APP_API_URL, VITE_APP_LOGIN, VITE_APP_PROFILE } = import.meta.env;
 const router = useRouter();
@@ -26,21 +27,63 @@ onMounted(() => {
   }
 });
 
-async function login() {
-  console.log(VITE_APP_API_URL);
-  await axios
-    .post(VITE_APP_LOGIN, formData.value)
-    .then((response) => {
-      console.log("SUCCESS");
-      // console.log(response.data);
+// async function login() {
+//   console.log(VITE_APP_API_URL);
+//   await axios
+//     .post(VITE_APP_LOGIN, formData.value)
+//     .then((response) => {
+//       console.log("SUCCESS");
+//       // console.log(response.data);
 
-      const token = response.data;
-      Cookies.set("authToken", JSON.stringify(token), {
-        expires: 7,
-        sameSite: "strict",
-      });
+//       const token = response.data;
+//       Cookies.set("authToken", JSON.stringify(token), {
+//         expires: 7,
+//         sameSite: "strict",
+//       });
 
-      console.log(rememberMe.value);
+//       console.log(rememberMe.value);
+//       if (rememberMe.value) {
+//         localStorage.setItem("savedEmail", formData.value.email);
+//       } else {
+//         localStorage.removeItem("savedEmail");
+//       }
+
+//       Swal.fire({
+//         // title: "",
+//         text: "로그인 되었습니다.",
+//         icon: "success",
+//       }).then(() => {
+//         router.replace({ name: "root" });
+//       });
+
+//       console.log("로그인 성공 및 쿠키 설정");
+//       // token.accessToken = response.data.accessToken;
+//       // token.refreshToken = response.data.refreshToken;
+//       console.log(token);
+//     })
+//     .catch((error) => {
+//       errMsg.value = "아이디 또는 비밀번호가 일치하지 않습니다.";
+//       console.error("Error:", error);
+//     });
+//   //   axios.get(VITE_APP_PROFILE,
+//   // {
+//   //   headers: {
+//   //     'Authorization': 'Bearer ' + token.accessToken
+//   //   }
+//   // })
+//   //   .then(response => {
+//   //     console.log("PROFILE " + response.data)
+//   //     console.log(response.data)
+//   //   }).catch(error => {
+//   //     console.error('Error:', error)
+//   //   })
+// }
+const userStore = useUserStore();
+
+const login = () => {
+  userStore
+    .login(formData.value)
+    .then(() => {
       if (rememberMe.value) {
         localStorage.setItem("savedEmail", formData.value.email);
       } else {
@@ -58,25 +101,13 @@ async function login() {
       console.log("로그인 성공 및 쿠키 설정");
       // token.accessToken = response.data.accessToken;
       // token.refreshToken = response.data.refreshToken;
-      console.log(token);
+      // console.log(token);
     })
     .catch((error) => {
       errMsg.value = "아이디 또는 비밀번호가 일치하지 않습니다.";
       console.error("Error:", error);
     });
-  //   axios.get(VITE_APP_PROFILE,
-  // {
-  //   headers: {
-  //     'Authorization': 'Bearer ' + token.accessToken
-  //   }
-  // })
-  //   .then(response => {
-  //     console.log("PROFILE " + response.data)
-  //     console.log(response.data)
-  //   }).catch(error => {
-  //     console.error('Error:', error)
-  //   })
-}
+};
 </script>
 
 <template>

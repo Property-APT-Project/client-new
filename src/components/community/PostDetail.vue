@@ -34,14 +34,17 @@ const {
 
 console.log(VITE_APP_API_POST + "/" + props.postId.value);
 onMounted(() => {
-  const tokenCookie = Cookies.get("authToken");
-  const token = JSON.parse(tokenCookie);
+  // const tokenCookie = Cookies.get("authToken");
+  // const token = JSON.parse(tokenCookie);
   axios
-    .get(VITE_APP_API_POST + "/" + props.postId, {
-      headers: {
-        Authorization: "Bearer " + token.accessToken,
-      },
-    })
+    .get(
+      VITE_APP_API_POST + "/" + props.postId
+      // {
+      //   headers: {
+      //     Authorization: "Bearer " + token.accessToken,
+      //   },
+      // }
+    )
     .then((response) => {
       postDetail.value = response.data;
       console.log(postDetail.value);

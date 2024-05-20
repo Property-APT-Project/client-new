@@ -46,6 +46,7 @@ const router = createRouter({
       path: "/community",
       name: "community",
       component: CommunityView,
+      // meta: { requiresAuth: true },
     },
     {
       path: "/posts/:id",
@@ -66,7 +67,7 @@ const router = createRouter({
       path: "/apt-detail",
       name: "apt-detail",
       component: AptDetailView,
-      props: route => ({info: route.query.info})
+      props: (route) => ({ info: route.query.info }),
     },
     {
       path: "/my-feed",
