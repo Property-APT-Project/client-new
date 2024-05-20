@@ -1,19 +1,28 @@
 <script setup>
+import { useRoute, useRouter } from 'vue-router';
+
 const props = defineProps({
   info: Object,
 });
+
+const router = useRouter();
+const goToDetail = () => {
+  router.push({
+    path: '/apt-detail',
+    query: { info: JSON.stringify(props.info) } // info 객체를 JSON 문자열로 변환하여 전달
+  });
+};
+
 </script>
 
 <template>
-  <li class="sidebar-item mb-3">
-    <a class="" href="/apt-detail">
+  <li class="sidebar-item mb-3" @click="goToDetail">
+    <a class="" href="#">
       <div class="row bg-gray p-3" style="background-color: white">
         <div class="col-5 d-flex">
-          <img
-            class="rounded w-100 align-middle"
-            src="@/assets/images/blog/blog-img1.jpg"
-            alt="prd1"
-          />
+          <img v-if="info.img1 != '@/assets/images/no-image.jpeg'" class="rounded w-100 align-middle"
+              :src="info.img1" alt="prd1" />
+            <img v-else class="rounded w-100 align-middle" src="@/assets/images/no-image.jpeg" alt="prd1" />
         </div>
         <div class="col-7">
           <div class="row">
@@ -26,7 +35,7 @@ const props = defineProps({
           </div>
 
           <h6 class="">{{ info.price }} 만원</h6>
-          <p class="mb-0">{{ info.floor }} 층 / {{ info.direction }}</p>
+          <p class="mb-0">{{ info.floor }} / {{ info.size }}</p>
         </div>
       </div>
     </a>

@@ -66,6 +66,7 @@ const router = createRouter({
       path: "/apt-detail",
       name: "apt-detail",
       component: AptDetailView,
+      props: route => ({info: route.query.info})
     },
     {
       path: "/my-feed",
@@ -88,5 +89,4 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
 export default router;

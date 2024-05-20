@@ -1,32 +1,31 @@
 <script setup>
 import { ref } from "vue";
 import NewsCard from "./news/NewsCard.vue";
+import axios from "axios";
 
-const id = ref(0);
+const newsList = ref([]);
 
-const newsList = ref([
-  {
-    id: id.value++,
-    title: "News1",
-    subTitle: "subTitle1",
-    viewCount: 231,
-    writeTime: "Mon, Dec 19",
-  },
-  {
-    id: id.value++,
-    title: "News2",
-    subTitle: "subTitle2",
-    viewCount: 312,
-    writeTime: "Mon, Dec 20",
-  },
-  {
-    id: id.value++,
-    title: "News3",
-    subTitle: "subTitle3",
-    viewCount: 313,
-    writeTime: "Mon, Dec 21",
-  },
-]);
+const path = "https://land.naver.com/news/airsList.naver?baseDate=2024-05-19&page=1&size=3";
+
+const fetchNewsInfo = async () => {
+  console.log('Fetching URL:', path);
+ 
+  try {
+    const response = await axios.get(path);
+    console.log('API Response:', response);
+    if (response.data) {
+      console.log("response")
+      newsList.value = response.data.list;
+      console.log(newsList.value)
+    } else {
+      console.log('No data received');
+    }
+  } catch (error) {
+    console.error('뉴스 조회 실패:', error.response ? error.response.data : error.message);
+  }
+};
+fetchNewsInfo();
+
 </script>
 
 <template>
@@ -37,7 +36,7 @@ const newsList = ref([
     </div>
   </div>
   <div class="row mb-3">
-    <NewsCard v-for="newsInfo in newsList" :key="newsInfo.id" :newsInfo="newsInfo" />
+    <NewsCard v-for="newsInfo in newsList" :key="newsInfo.articleId" :newsInfo="newsInfo" />
   </div>
 </template>
 
