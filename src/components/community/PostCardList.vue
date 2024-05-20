@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 import PostCard from "./PostCard.vue";
 import { usePostStore } from "@/stores/post";
@@ -9,10 +9,35 @@ const posts = ref([]);
 const { VITE_APP_API_POST } = import.meta.env;
 
 const postStore = usePostStore();
+// const isLoading = ref(false);
 
-onMounted(() => {
-  postStore.fetchPosts();
-});
+// const loadMorePosts = () => {
+//   if (
+//     window.innerHeight + window.scrollY >=
+//     document.documentElement.offsetHeight - 500
+//   ) {
+//     console.log("Loading...");
+//     postStore.fetchPosts().then(() => {
+//       isLoading.value = false;
+//     });
+//   }
+// };
+
+// const handleScroll = () => {
+//   if (!isLoading.value) {
+//     isLoading.value = true;
+//     loadMorePosts();
+//   }
+// };
+
+// onMounted(() => {
+//   postStore.fetchPosts();
+//   window.addEventListener("scroll", handleScroll);
+// });
+
+// onUnmounted(() => {
+//   window.removeEventListener("scroll", handleScroll);
+// });
 const fetchPosts = () => {
   axios
     .get(VITE_APP_API_POST)
@@ -35,6 +60,12 @@ const fetchPosts = () => {
         :key="post.id"
       >
         <PostCard :post="post" />
+      </div>
+      <div v-if="postStore.loading" class="text-center my-4">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <!-- <p>Loading...</p> -->
       </div>
     </div>
   </div>

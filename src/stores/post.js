@@ -7,16 +7,39 @@ const { VITE_APP_API_POST, VITE_APP_API_NEW_POST } = import.meta.env;
 export const usePostStore = defineStore("post", {
   state: () => ({
     posts: [],
+    page: 1,
+    limit: 5,
+    loading: false,
+    hasMore: true,
   }),
   actions: {
     fetchPosts() {
+      if (this.loading || !this.hasMore) return;
+
+      this.loading = true;
       return axios
-        .get(VITE_APP_API_POST)
+        .get(VITE_APP_API_POST, {
+          params: {
+            _page: this.page,
+            _limit: this.limit,
+            _sort: "create_time",
+            _order: "desc",
+          },
+        })
         .then((response) => {
-          this.posts = response.data;
+          if (response.data.length < this.limit) {
+            this.hasMore = false;
+          }
+          // this.posts = response.data;
+          this.posts = [...this.posts, ...response.data];
+          console.log(this.posts);
+          this.page += 1;
         })
         .catch((error) => {
           console.error("Error fetching posts:", error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     addPost(newPost) {

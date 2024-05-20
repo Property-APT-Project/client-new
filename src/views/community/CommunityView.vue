@@ -3,17 +3,53 @@ import PostForm from "/src/components/community/PostForm.vue";
 import PostCard from "/src/components/community/PostCard.vue";
 import PostCardList from "/src/components/community/PostCardList.vue";
 import Cookies from "js-cookie";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import { usePostStore } from "@/stores/post";
 import { useRouter } from "vue-router";
 
-const handleScroll = () => {
-  const bottomOfWindow =
+// const handleScroll = () => {
+//   const bottomOfWindow =
+//     window.innerHeight + window.scrollY >=
+//     document.documentElement.offsetHeight;
+//   if (bottomOfWindow) {
+//     // loadPosts();
+//     console.log("LOADING>>>>");
+//   }
+// };
+
+const postStore = usePostStore();
+const isLoading = ref(false);
+
+const loadMorePosts = () => {
+  if (
     window.innerHeight + window.scrollY >=
-    document.documentElement.offsetHeight;
-  if (bottomOfWindow) {
-    // loadPosts();
+    document.documentElement.scrollHeight - 1
+  ) {
+    if (!postStore.loading && postStore.hasMore) {
+      isLoading.value = true;
+      postStore.fetchPosts().then(() => {
+        isLoading.value = false;
+      });
+    }
   }
 };
+
+const handleScroll = () => {
+  console.log(isLoading.value);
+  if (!isLoading.value) {
+    loadMorePosts();
+  }
+};
+
+// onMounted(() => {
+//   postStore.fetchPosts();
+//   window.addEventListener("scroll", handleScroll);
+// });
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
+
 const showButton = ref(false);
 const isAuthenticated = ref(false);
 const router = useRouter();
@@ -23,6 +59,7 @@ onMounted(() => {
     showButton.value = true;
     isAuthenticated.value = true;
   }
+  postStore.fetchPosts();
   window.addEventListener("scroll", handleScroll);
   // loadPosts();
 });
