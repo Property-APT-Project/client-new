@@ -273,10 +273,36 @@ watch(gugun, (newValue, oldValue)=>{
   console.log(newValue);
 })
 
+
+function getComplexListByDongCode(dongCode) {
+  const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/complexes/dong-code/${dongCode}`
+  axios.get(path)
+  .then((response) => {
+    complexList.value = response['data'];
+    console.log(complexList.value[0]);
+    emit('complexList', complexList.value);
+  }).catch((response) => {
+    console.log('단지 조회 실패');
+  });
+}
+
+function getSaleListByDongCode(dongCode) {
+  const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/sale-articles/dong-code/${dongCode}`
+  axios.get(path)
+  .then((response) => {
+    saleList.value = response['data'];
+    console.log(saleList.value[0]);
+    emit('saleList', saleList.value);
+  }).catch((response) => {
+    console.log('단지 조회 실패');
+  });
+}
+
+
 watch(dong, (newValue, oldValue)=>{
   const code = newValue.substr(0,8);
-
-
+  getComplexListByDongCode(newValue);
+  getSaleListByDongCode(code);
 
 });
 
