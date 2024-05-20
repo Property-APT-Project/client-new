@@ -72,7 +72,7 @@ fetchComplexInfo();
       <div class="row" style="margin-right: 0; padding-right: 0; padding-left: 0;">
         <div class="row col-lg-8 d-flex align-items-stretch" style="margin-right: 0; margin-left: 0; padding-left: 0; padding-right: 0;">
           <div class="col-12">
-            <FocusedMap />
+            <FocusedMap :lat="complexInfo.lat" :lng="complexInfo.lng" />
           </div>
           <div class="col-12" style="padding-right: 0;">
             <DetailVue :complex="complexInfo" />
@@ -83,7 +83,7 @@ fetchComplexInfo();
           <div class="col-12"  style="padding-right: 0;"><graph-vue /></div>
 
           <div class="col-12"  style="padding-right: 0;">
-            <PriceVue />
+            <PriceVue :complex="complexInfo"/>
           </div>
         </div>
         <div class="row col-lg-4 d-flex align-items-stretch" style="height: 100%; margin: 0; padding-right: 0;">

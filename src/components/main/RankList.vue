@@ -31,6 +31,12 @@ const fetchNewsInfo = async () => {
     console.error('뉴스 조회 실패:', error.response ? error.response.data : error.message);
   }
 };
+
+const coordinate = {
+  lat: 37.566826,
+  lng: 126.9786567,
+};
+
 fetchNewsInfo();
 
 </script>
@@ -53,7 +59,7 @@ fetchNewsInfo();
       </div>
     </div>
   </div>
-  <FocusedMap />
+  <FocusedMap :lat="coordinate.lat" :lng="coordinate.lng" />
 </template>
 
 <style scoped></style>

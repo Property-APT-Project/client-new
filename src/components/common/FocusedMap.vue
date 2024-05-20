@@ -4,6 +4,10 @@ import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 import { ref, watch } from 'vue';
 
 const map = ref();
+const props = defineProps({
+  lat: String,
+  lng: String
+});
 
 watch(map, (newInfo, prevInfo) => {
   getInfo()
@@ -82,8 +86,8 @@ const getInfo = () => {
           <h5 class="card-title fw-semibold mb-4">지도</h5>
           <div class="container-fluid">
             <div class="row align-items-stretch justify-content-center">
-              <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" @onLoadKakaoMap="onLoadKakaoMap" :draggable="true" style="width: 100%">
-                <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng" ></KakaoMapMarker>
+              <KakaoMap :lat="lat" :lng="lng" @onLoadKakaoMap="onLoadKakaoMap" :draggable="true" style="width: 100%">
+                <KakaoMapMarker :lat="lat" :lng="lng" ></KakaoMapMarker>
               </KakaoMap>
 
 
