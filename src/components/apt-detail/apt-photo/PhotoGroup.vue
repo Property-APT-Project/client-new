@@ -3,7 +3,8 @@ import Photo from "@/components/apt-detail/apt-photo/Photo.vue";
 import { onMounted, ref} from "vue";
 
 const props = defineProps({
-  saleInfo: Object,
+  complex: Object,
+  saleInfo: Object
 });
 
 onMounted(() => {
@@ -22,18 +23,18 @@ onMounted(() => {
         <div class="col-6">
           <div class="row p-3">
             <div class="col-6">
-              <Photo :photoSrc="saleInfo[0].img2" />
+              <Photo :photoSrc="complex.images2" />
             </div>
             <div class="col-6">
-              <Photo :photoSrc="saleInfo[0].img3" />
+              <Photo :photoSrc="complex.images3" />
             </div>
           </div>
           <div class="row p-3">
             <div class="col-6">
-              <Photo :photoSrc="saleInfo[0].img4" />
+              <Photo :photoSrc="complex.images4" />
             </div>
             <div class="col-6">
-              <Photo :photoSrc="saleInfo[0].img5" />
+              <Photo :photoSrc="complex.images5" />
             </div>
           </div>
         </div>

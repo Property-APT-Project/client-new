@@ -9,9 +9,9 @@ const props = defineProps({
 </script>
 
 <template>
-    <a href="" data-toggle="modal" data-target="#myModal">
-        <img v-if="photoSrc != '@/assets/images/no-image.jpeg' " :src="photoSrc" style="width: 100%;" />
-        <img v-else src="@/assets/images/no-image.jpeg" style="width: 100%;" />
+    <a href="" data-toggle="modal" data-target="#myModal" style="height: 100%;">
+        <img v-if="photoSrc != '@/assets/images/no-image.jpeg' " :src="photoSrc" style="width: 100%; height: 100%;" />
+        <img v-else src="@/assets/images/no-image.jpeg" style="width: 100%; height: 100%;"  />
     </a>
 
 

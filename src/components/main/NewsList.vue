@@ -5,7 +5,16 @@ import axios from "axios";
 
 const newsList = ref([]);
 
-const path = "https://land.naver.com/news/airsList.naver?baseDate=2024-05-19&page=1&size=3";
+var today = new Date();
+
+var year = today.getFullYear();
+var month = ('0' + (today.getMonth() + 1)).slice(-2);
+var day = ('0' + today.getDate()).slice(-2);
+
+var dateString = year + '-' + month  + '-' + day;
+
+
+const path = `https://land.naver.com/news/airsList.naver?baseDate=${dateString}&page=1&size=3`;
 
 const fetchNewsInfo = async () => {
   console.log('Fetching URL:', path);

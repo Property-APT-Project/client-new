@@ -63,7 +63,7 @@ fetchComplexInfo();
     <div class="body-wrapper-inner mb-6 container-fluid w-100">
       <div class="row">
         <div class="col-12">
-          <PhotoGroupVue :saleInfo="saleOne" />
+          <PhotoGroupVue :saleInfo="saleOne" :complex="complexInfo" />
         </div>
         
       </div>
