@@ -58,7 +58,7 @@ function formatDate(dateString) {
         <img
           :src="`${VITE_APP_API_MEMBER_UPLOAD}/${post.profileImgURL}`"
           alt="matdash-img"
-          class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9"
+          class="rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9"
           width="40"
           height="40"
           data-bs-toggle="tooltip"
@@ -140,5 +140,9 @@ function formatDate(dateString) {
   height: auto;
 
   object-fit: cover; /* 이미지가 잘리지 않도록 설정 */
+}
+
+.rounded-circle {
+  object-fit: cover;
 }
 </style>

@@ -256,4 +256,8 @@ const handleCommentSubmit = () => {
   padding: 20px; /* 내부 여백 추가 */
   border-radius: 8px; /* 모서리를 둥글게 설정 */
 }
+
+.rounded-circle {
+  object-fit: cover;
+}
 </style>

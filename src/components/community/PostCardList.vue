@@ -2,12 +2,18 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import PostCard from "./PostCard.vue";
+import { usePostStore } from "@/stores/post";
 import Cookies from "js-cookie";
 
 const posts = ref([]);
 const { VITE_APP_API_POST } = import.meta.env;
 
+const postStore = usePostStore();
+
 onMounted(() => {
+  postStore.fetchPosts();
+});
+const fetchPosts = () => {
   axios
     .get(VITE_APP_API_POST)
     .then((response) => {
@@ -17,15 +23,15 @@ onMounted(() => {
     .catch((error) => {
       console.error("Error fetching posts:", error);
     });
-});
+};
 </script>
 
 <template>
   <div class="container">
     <div class="row justify-content-center">
       <div
-        class="d-flex justify-content-center col-xl-6 col-lg-8 col-md-10 col-sm-12"
-        v-for="post in posts"
+        class="d-flex justify-content-center col-xxl-7 col-xl-7 col-lg-8 col-md-9 col-sm-10"
+        v-for="post in postStore.posts"
         :key="post.id"
       >
         <PostCard :post="post" />

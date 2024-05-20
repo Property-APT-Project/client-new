@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import { usePostStore } from "@/stores/post";
 
 const formData = ref({
   imgURL: "",
@@ -11,12 +12,31 @@ const formData = ref({
   content: "",
 });
 
+const postStore = usePostStore();
+
 function resetForm() {
   formData.value.title = "";
   formData.value.content = "";
 }
 const { VITE_APP_API_NEW_POST } = import.meta.env;
 const router = useRouter();
+
+const handleSubmit = async () => {
+  postStore
+    .addPost(formData.value)
+    .then(
+      Swal.fire({
+        // title: "",
+        text: "등록되었습니다.",
+        icon: "success",
+      })
+    )
+    .then(resetForm)
+    .catch((error) => {
+      console.error("Error submitting post:", error);
+    });
+};
+
 async function sendData() {
   const tokenCookie = Cookies.get("authToken");
   const token = JSON.parse(tokenCookie);
@@ -29,6 +49,7 @@ async function sendData() {
     .then((response) => {
       console.log("SUCCESS");
       console.log(response.data);
+      emit("post-added", response.data);
       Swal.fire({
         // title: "",
         text: "등록되었습니다.",
@@ -40,10 +61,10 @@ async function sendData() {
     });
 }
 
-function handleSubmit() {
-  sendData();
-  resetForm();
-}
+// function handleSubmit() {
+//   sendData();
+//   resetForm();
+// }
 </script>
 
 <template>
