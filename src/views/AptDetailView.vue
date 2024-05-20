@@ -87,7 +87,7 @@ fetchComplexInfo();
           </div>
         </div>
         <div class="row col-lg-4 d-flex align-items-stretch" style="height: 100%; margin: 0; padding-right: 0;">
-          <DealSideBar/>
+          <DealSideBar :sale="saleOne" :complex="complexInfo" />
 
 
         </div>

@@ -1,9 +1,18 @@
 <script setup>
 import FocusedMap from "@/components/common/FocusedMap.vue";
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import axios from 'axios';
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 const { VITE_APP_DATA_SERVICE_KEY } = import.meta.env;
+
+const sido = ref('')
+const gugun = ref('')
+const dong = ref('')
+
+const sidoList = ref([])
+const gugunList = ref([])
+
+const dongList = ref([])
 
 const map = ref();
 
@@ -20,6 +29,46 @@ const emit = defineEmits(['saleList', 'complexList'])
 
 const path = "http://localhost:8080/where-is-my-home/api/v1";
 
+function getSidoList() {
+  console.log("http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/sido");
+  axios.get("http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/sido")
+  .then((response) =>{
+    sidoList.value = response['data'];
+    console.log("sidoList");
+    console.log(sidoList.value);
+  })
+  .catch(() =>{
+    console.log("시도 조회 실패");
+  })
+}
+
+function getGugunList(sido) {
+  const path = `http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/gugun/${sido}`
+  console.log(path);
+  axios.get(path)
+  .then((response) =>{
+    gugunList.value = response['data'];
+    console.log("gugunList");
+    console.log(gugunList.value);
+  })
+  .catch(() =>{
+    console.log("구군 조회 실패");
+  })
+}
+
+function getDongList(gugun) {
+  const path = `http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/dong/${gugun}`
+  console.log(path);
+  axios.get(path)
+  .then((response) =>{
+    dongList.value = response['data'];
+    console.log("dongList");
+    console.log(dongList.value);
+  })
+  .catch(() =>{
+    console.log("동 조회 실패");
+  })
+}
 
 function getAptSaleList(level, sLat, eLat, sLng, eLng) {
   if (level <= 5) {
@@ -209,11 +258,50 @@ const onLoadKakaoMap = (mapRef) => {
     getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
   });
 };
+
+watch(sido, (newValue, oldValue)=>{
+  getGugunList(newValue);
+  console.log(newValue);
+})
+
+watch(gugun, (newValue, oldValue)=>{
+  getDongList(newValue);
+  console.log(newValue);
+})
+
+getSidoList();
+
 </script>
 
 <template>
   <div class="body-wrapper col-lg-9 col-md-8 col-sm-12 m-0 ps-0 pe-0" style="height: 100%">
-    <div class="ms-0 me-0" style="width: 100%; height: 100%">
+    <div class="row ms-0 me-0 mb-3" style="width: 100%; margin-top: 8%; height: 5%">
+      <div class="col-4 m-0 p-0" style="height: 100%;">
+        <div class="row ps-3">
+          <div class="col-4 p-0">
+            <select v-model="sido" class="form-select" style="height: 100%;">
+              <option value="" selected disabled hidden>시도</option>
+              <option v-for="(item, index) in sidoList" :key="index" :value="item.dongCode">{{ item.sidoName }}</option>
+            </select>
+          </div>
+          <div  class="col-4 p-0">
+            <select v-model="gugun" class="form-select" style="height: 100%;">
+              <option value="" selected disabled hidden>구군</option>
+              <option v-for="(item, index) in gugunList" :key="index" :value="item.dongCode">{{ item.gugunName }}</option>
+            </select>
+          </div>
+          <div class="col-4 p-0">
+            <select v-model="dong" class="form-select" style="height: 100%;">
+              <option value="" selected disabled hidden>동</option>
+              <option v-for="(item, index) in dongList" :key="index" :value="item.dongCode">{{ item.dongName }}</option>
+            </select>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="row ms-0 me-0" style="width: 100%; height: 80%">
       <div class="row align-items-stretch justify-content-center h-100" style="width: 100%; height: 100%">
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" @onLoadKakaoMap="onLoadKakaoMap" :draggable="true"
           style="width: 100%; height: 100%">

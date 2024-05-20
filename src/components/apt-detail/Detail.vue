@@ -72,7 +72,7 @@ console.log(props.complex)
                 </div>
               </td>
               <td>
-                <span>{{ complex.pyoengNames }}</span>
+                <span>{{ complex.pyoengNames }}㎡</span>
               </td>
             </tr>
           </tbody>
