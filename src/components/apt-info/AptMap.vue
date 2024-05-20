@@ -5,6 +5,10 @@ import axios from 'axios';
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 const { VITE_APP_DATA_SERVICE_KEY } = import.meta.env;
 
+const isSelectedI2 = ref(false);
+const isSelectedP1 = ref(false);
+const isSelectedQ1 = ref(false);
+
 const sido = ref('')
 const gugun = ref('')
 const dong = ref('')
@@ -269,13 +273,20 @@ watch(gugun, (newValue, oldValue)=>{
   console.log(newValue);
 })
 
+watch(dong, (newValue, oldValue)=>{
+  const code = newValue.substr(0,8);
+
+
+
+});
+
 getSidoList();
 
 </script>
 
 <template>
-  <div class="body-wrapper col-lg-9 col-md-8 col-sm-12 m-0 ps-0 pe-0" style="height: 100%">
-    <div class="row ms-0 me-0 mb-3" style="width: 100%; margin-top: 8%; height: 5%">
+  <div class="body-wrapper col-lg-9 col-md-8 col-sm-12 m-0 ps-2 pe-0 bg-light" style="height: 100%; padding-top: 5%;">
+    <div class="row ms-0 me-0 mb-3" style="width: 100%; height: 5%">
       <div class="col-4 m-0 p-0" style="height: 100%;">
         <div class="row ps-3">
           <div class="col-4 p-0">
@@ -300,8 +311,28 @@ getSidoList();
 
         </div>
       </div>
+      <div class="col-6 m-0 p-0" style="height: 100%;"></div>
+      <div class="col-1 m-0 p-0" style="height: 100%;">
+        <div class="row" style="height: 100%;">
+          <div class="col-4 bg-light">
+            <a @click="isSelectedI2=!isSelectedI2" class="p-2" style="height: 100%; width: 100%;">
+              <img class="m-0" src="@/assets/icons/fork-marker.png" style="width: 100%; height: 90%;"/>
+            </a>
+          </div>
+          <div class="col-4 bg-light">
+            <a @click="isSelectedQ1=!isSelectedQ1" class="p-2" style="height: 100%; width: 100%;">
+              <img class="m-0" src="@/assets/icons/hospital-marker.png" style="width: 100%; height: 90%;"/>
+            </a>
+          </div>
+          <div class="col-4 bg-light">
+            <a @click="isSelectedP1=!isSelectedP1" class="p-2" style="height: 100%; width: 100%;">
+              <img class="m-0" src="@/assets/icons/book-marker.png" style="width: 100%; height: 90%;"/>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row ms-0 me-0" style="width: 100%; height: 80%">
+    <div class="row ms-0 me-0" style="width: 100%; height: 90%">
       <div class="row align-items-stretch justify-content-center h-100" style="width: 100%; height: 100%">
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" @onLoadKakaoMap="onLoadKakaoMap" :draggable="true"
           style="width: 100%; height: 100%">
@@ -313,27 +344,28 @@ getSidoList();
             imageOption: {}
           }"></KakaoMapMarker>
           <!-- <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker> -->
-
+          <span v-if="isSelectedP1">
           <KakaoMapMarker v-for="(item, index) in commericalP1" :key="index" :lat="item.lat" :lng="item.lon" :image="{
             imageSrc: '../../src/assets/icons/book-marker.png',
             imageWidth: 30,
             imageHeight: 30,
             imageOption: {}
-          }"></KakaoMapMarker>
-
+          }"></KakaoMapMarker></span>
+          <span v-if="isSelectedQ1">
           <KakaoMapMarker v-for="(item, index) in commericalQ1" :key="index" :lat="item.lat" :lng="item.lon" :image="{
             imageSrc: '../../src/assets/icons/hospital-marker.png',
             imageWidth: 30,
             imageHeight: 30,
             imageOption: {}
           }"></KakaoMapMarker>
-
+          </span>
+          <span v-if="isSelectedI2">
           <KakaoMapMarker v-for="(item, index) in commericalI2" :key="index" :lat="item.lat" :lng="item.lon" :image="{
             imageSrc: '../../src/assets/icons/fork-marker.png',
             imageWidth: 30,
             imageHeight: 30,
             imageOption: {}
-          }"></KakaoMapMarker>
+          }"></KakaoMapMarker></span>
         </KakaoMap>
       </div>
     </div>
