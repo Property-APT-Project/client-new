@@ -18,10 +18,28 @@ function resetForm() {
   formData.value.title = "";
   formData.value.content = "";
 }
-const { VITE_APP_API_NEW_POST } = import.meta.env;
+const { VITE_APP_API_NEW_POST, VITE_APP_API_POST_UPLOAD } = import.meta.env;
 const router = useRouter();
 
 const handleSubmit = async () => {
+  const form = new FormData();
+  form.append("file", file.value);
+
+  console.log("file" + file.value);
+  await axios
+    .post(VITE_APP_API_POST_UPLOAD, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      formData.value.imgURL = response.data;
+      console.log("Image uploaded successfully:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
   postStore
     .addPost(formData.value)
     .then(
@@ -38,6 +56,24 @@ const handleSubmit = async () => {
 };
 
 async function sendData() {
+  const form = new FormData();
+  form.append("file", file.value);
+
+  console.log("file" + file.value);
+  await axios
+    .post(VITE_APP_API_POST_UPLOAD, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      formData.value.imgURL = response.data;
+      console.log("Image uploaded successfully:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
   const tokenCookie = Cookies.get("authToken");
   const token = JSON.parse(tokenCookie);
   await axios
@@ -59,6 +95,25 @@ async function sendData() {
     .catch((error) => {
       console.error("Error:", error);
     });
+}
+
+const file = ref("");
+async function uploadImage(event) {
+  const files = event.target?.files;
+  file.value = files[0];
+  await base64(file.value);
+}
+function base64(file) {
+  return new Promise((resolve) => {
+    let a = new FileReader();
+    a.onload = (e) => {
+      resolve(e.target.result);
+      const previewImage = document.getElementById("profileImage");
+      previewImage.src = e.target.result;
+    };
+
+    a.readAsDataURL(file);
+  });
 }
 
 // function handleSubmit() {
@@ -105,7 +160,7 @@ async function sendData() {
                 <div class="row">
                   <div class="col d-flex justify-content-center">
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNcLkQF3V0hTnbAu90VnMxQuakrYjPRZewRZbKGvC2zg&s"
+                      src="@/assets/images/blog/blog-img1.jpg"
                       id="profileImage"
                       class="card-img img-thumbnail"
                       alt="..."

@@ -11,7 +11,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-const message = ref("Token validation in progress...");
+const message = ref("인증 중...");
 
 const { VITE_APP_API_RESET_PASSWORD_VALIDATE_TOKEN } = import.meta.env;
 onMounted(() => {
@@ -25,7 +25,8 @@ onMounted(() => {
       localStorage.setItem("resetToken", token); // 토큰을 로컬 스토리지에 저장
     })
     .catch((error) => {
-      message.value = "Error: " + error.response.data;
+      // message.value = "Error: " + error.response.data;
+      message.value = "유효하지 않은 인증입니다";
     });
 });
 </script>

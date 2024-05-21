@@ -11,6 +11,8 @@ const props = defineProps({
 });
 
 const { VITE_APP_API_MEMBER_UPLOAD } = import.meta.env;
+const { VITE_APP_API_POST_UPLOAD } = import.meta.env;
+
 const isAuthenticated = ref(false);
 
 onMounted(() => {
@@ -48,13 +50,22 @@ function formatDate(dateString) {
       :class="{ blur: !isAuthenticated }"
     >
       <div class="position-relative">
-        <a href="javascript:void(0)">
+        <!-- <a href="javascript:void(0)">
           <img
             src="@/assets/images/blog/blog-img1.jpg"
             class="post-image"
             alt="matdash-img"
           />
-        </a>
+        </a> -->
+        <router-link :to="{ name: 'postDetail', params: { id: post.id } }">
+          <a href="javascript:void(0)">
+            <img
+              :src="`${VITE_APP_API_POST_UPLOAD}/${post.imgURL}`"
+              class="post-image"
+              alt="matdash-img"
+            />
+          </a>
+        </router-link>
         <img
           :src="`${VITE_APP_API_MEMBER_UPLOAD}/${post.profileImgURL}`"
           alt="matdash-img"
