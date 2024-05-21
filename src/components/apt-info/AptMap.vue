@@ -6,7 +6,9 @@ import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 const { VITE_APP_DATA_SERVICE_KEY } = import.meta.env;
 
 const props = defineProps({
-  keyword: String
+  keyword: String,
+  selectLat: String,
+  selectLng: String
 });
 
 const isSelectedI2 = ref(false);
@@ -218,7 +220,8 @@ const onLoadKakaoMap = (mapRef) => {
   map.value.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
   // 지도 중심좌표를 얻어옵니다  latlng.getLat() latlng.getLng()
-  let latlng = map.value.getCenter();
+  lat.value = map.value.getCenter().getLat();
+  lng.value = map.value.getCenter().getLng();
   let level = map.value.getLevel();
   let bounds = map.value.getBounds();
   // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
@@ -239,11 +242,13 @@ const onLoadKakaoMap = (mapRef) => {
     console.log("non keyword");
     getAptSaleList(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
     getComplexList(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-    getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-    getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-    getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+
 
   }
+
+  getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+  getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+  getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
 
   
 
@@ -351,14 +356,25 @@ function getComplexListByKeyword(level, keyword) {
     // 영역의 북동쪽 좌표를 얻어옵니다
     let neLatLng = bounds.getNorthEast();
 
-    getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-    getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-    getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-
     emit('complexList', complexList.value);
   }).catch((response) => {
     console.log('단지 조회 실패');
   });
+
+  watch(lat, ()=>{
+    let level = map.value.getLevel();
+    let bounds = map.value.getBounds();
+    // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
+    let swLatLng = bounds.getSouthWest();
+    // 영역의 북동쪽 좌표를 얻어옵니다
+    let neLatLng = bounds.getNorthEast();
+    
+    getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+    getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+    getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+  })
+
+
 }
 
 function getSaleListByKeyword(keyword) {
@@ -373,6 +389,18 @@ function getSaleListByKeyword(keyword) {
     console.log('키워드 매물 조회 실패');
   });
 }
+
+watch(() => props.selectLat, (newLat) => {
+  console.log("selectLat changed to: " + newLat);
+  lat.value = newLat;
+  // 추가적인 로직을 여기서 처리할 수 있습니다.
+});
+
+watch(() => props.selectLng, (newLng) => {
+  console.log("selectLng changed to: " + newLng);
+  lng.value = newLng;
+  // 추가적인 로직을 여기서 처리할 수 있습니다.
+});
 
 
 
@@ -409,19 +437,19 @@ function getSaleListByKeyword(keyword) {
       <div class="col-6 m-0 p-0" style="height: 100%;"></div>
       <div class="col-1 m-0 p-0" style="height: 100%;">
         <div class="row" style="height: 100%;">
-          <div class="col-4 bg-light">
-            <a @click="isSelectedI2=!isSelectedI2" class="p-2" style="height: 100%; width: 100%;">
-              <img class="m-0" src="@/assets/icons/fork-marker.png" style="width: 100%; height: 90%;"/>
+          <div class="col-3 bg-light p-0 ms-1">
+            <a @click="isSelectedI2=!isSelectedI2" class="p-0" style="height: 100%; width: 100%;">
+              <img class="m-0" src="@/assets/icons/marker-food.png" style="width: 100%; height: 90%;"/>
             </a>
           </div>
-          <div class="col-4 bg-light">
-            <a @click="isSelectedQ1=!isSelectedQ1" class="p-2" style="height: 100%; width: 100%;">
-              <img class="m-0" src="@/assets/icons/hospital-marker.png" style="width: 100%; height: 90%;"/>
+          <div class="col-3 bg-light p-0 ms-1">
+            <a @click="isSelectedQ1=!isSelectedQ1" class="p-0" style="height: 100%; width: 100%;">
+              <img class="m-0" src="@/assets/icons/marker-hospital.png" style="width: 100%; height: 90%;"/>
             </a>
           </div>
-          <div class="col-4 bg-light">
-            <a @click="isSelectedP1=!isSelectedP1" class="p-2" style="height: 100%; width: 100%;">
-              <img class="m-0" src="@/assets/icons/book-marker.png" style="width: 100%; height: 90%;"/>
+          <div class="col-3 bg-light p-0 ms-1">
+            <a @click="isSelectedP1=!isSelectedP1" class="p-0" style="height: 100%; width: 100%;">
+              <img class="m-0" src="@/assets/icons/marker-school.png" style="width: 100%; height: 90%;"/>
             </a>
           </div>
         </div>
@@ -434,21 +462,21 @@ function getSaleListByKeyword(keyword) {
           <!-- v-for을 사용하여 saleList의 각 요소에 대해 마커를 생성합니다. -->
           <KakaoMapMarker v-for="(item, index) in complexList" :key="index" :lat="item.lat" :lng="item.lng" :image="{
             imageSrc: '../../src/assets/icons/house-marker.png',
-            imageWidth: 30,
-            imageHeight: 30,
+            imageWidth: 40,
+            imageHeight: 40,
             imageOption: {}
           }"></KakaoMapMarker>
           <!-- <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker> -->
           <span v-if="isSelectedP1">
           <KakaoMapMarker v-for="(item, index) in commericalP1" :key="index" :lat="item.lat" :lng="item.lon" :image="{
-            imageSrc: '../../src/assets/icons/book-marker.png',
+            imageSrc: '../../src/assets/icons/marker-school.png',
             imageWidth: 30,
             imageHeight: 30,
             imageOption: {}
           }"></KakaoMapMarker></span>
           <span v-if="isSelectedQ1">
           <KakaoMapMarker v-for="(item, index) in commericalQ1" :key="index" :lat="item.lat" :lng="item.lon" :image="{
-            imageSrc: '../../src/assets/icons/hospital-marker.png',
+            imageSrc: '../../src/assets/icons/marker-hospital.png',
             imageWidth: 30,
             imageHeight: 30,
             imageOption: {}
@@ -456,7 +484,7 @@ function getSaleListByKeyword(keyword) {
           </span>
           <span v-if="isSelectedI2">
           <KakaoMapMarker v-for="(item, index) in commericalI2" :key="index" :lat="item.lat" :lng="item.lon" :image="{
-            imageSrc: '../../src/assets/icons/fork-marker.png',
+            imageSrc: '../../src/assets/icons/marker-food.png',
             imageWidth: 30,
             imageHeight: 30,
             imageOption: {}

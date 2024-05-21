@@ -40,6 +40,8 @@ const aptName = ref("");
 const selectedAptList = ref([]);
 // selectedAptList = saleList.value.filter((apt) => apt.aptName == aptName.value);
 
+const emit = defineEmits(["selectLat", "selectLng"]);
+
 watch(currInfo, (newInfo, prevInfo) => {
   console.log(newInfo);
   isSelectComplex.value = true;
@@ -48,6 +50,9 @@ watch(currInfo, (newInfo, prevInfo) => {
 
 
   aptName.value = newInfo.aptName;
+
+  emit("selectLat", newInfo.lat);
+  emit("selectLng", newInfo.lng);
 
   const path = "http://localhost:8080/where-is-my-home/api/v1";
 

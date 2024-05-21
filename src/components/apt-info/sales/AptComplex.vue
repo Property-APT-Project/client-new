@@ -11,14 +11,17 @@ function clickComplexButton(info) {
 
 <template>
   <li class="sidebar-item mb-3">
-    <a class="" href="#" @click="clickComplexButton(info)">
+    
       <div class="row bg-gray p-3" style="background-color: white">
+        
         <div class="col-5 d-flex">
           <div class="col-5 d-flex w-100" style="object-fit: cover;">
+            <a class="" href="#" @click="clickComplexButton(info)">
             <img v-if="info.thumbImg != '@/assets/images/no-image.jpeg'" class="rounded w-100 align-middle"
               :src="info.thumbImg" alt="prd1" />
             <img v-else class="rounded w-100 align-middle" src="https://d1774jszgerdmk.cloudfront.net/512/default_img_horizon.png" alt="prd1" />
-          </div>
+          </a>
+        </div>
         </div>
         <div class="col-7 m-0">
 
@@ -36,7 +39,6 @@ function clickComplexButton(info) {
               </div>
         </div>
       </div>
-    </a>
   </li>
 </template>
 
