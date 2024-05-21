@@ -1,4 +1,15 @@
-<script setup></script>
+<script setup>
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+
+  const keyword = ref('');
+  const router = useRouter();
+
+  const navigateToAptMap = () => {
+    router.push({ name: 'aptKeyword', params: { keyword: keyword.value } });
+  };
+
+</script>
 
 <template>
   <div class="col-lg-12 mt-5 mb-5 justify-content-center row">
@@ -13,6 +24,7 @@
                   style="font-size: 20px; border: none"
                   placeholder="검색어를 입력하세요."
                   type="text"
+                  v-model="keyword"
                 />
               </div>
               <div class="col-3">
@@ -20,6 +32,7 @@
                   class="w-100 rounded-pill bg-light p-2 text-gray"
                   type="submit"
                   style="font-size: 20px; border: none"
+                  @click="navigateToAptMap"
                 >
                   검색
                 </button>

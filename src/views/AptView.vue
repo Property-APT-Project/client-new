@@ -2,9 +2,13 @@
 import AptMap from "@/components/apt-info/AptMap.vue";
 import LeftSideVue from "@/components/apt-info/LeftSide.vue";
 
-import {ref} from 'vue';
+import { ref, defineProps } from 'vue';
+
 const saleList = ref([]);
 const complexList = ref([])
+
+const props = defineProps(['keyword']);
+console.log("keyword", props.keyword);
 
 
 </script>
@@ -18,7 +22,8 @@ const complexList = ref([])
 
       <AptMap 
       @saleList="(sales) => saleList = sales" 
-      @complexList="(complexes) => complexList = complexes" />
+      @complexList="(complexes) => complexList = complexes" 
+      :keyword="keyword"/>
     </div>
   </div>
 </template>

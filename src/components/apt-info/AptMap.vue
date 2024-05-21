@@ -5,6 +5,10 @@ import axios from 'axios';
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 const { VITE_APP_DATA_SERVICE_KEY } = import.meta.env;
 
+const props = defineProps({
+  keyword: String
+});
+
 const isSelectedI2 = ref(false);
 const isSelectedP1 = ref(false);
 const isSelectedQ1 = ref(false);
@@ -20,10 +24,8 @@ const dongList = ref([])
 
 const map = ref();
 
-const coordinate = ref({
-  lat: 37.566826,
-  lng: 126.9786567,
-});
+const lat = ref("37.566826")
+const lng = ref("126.9786567")
 
 const saleList = ref([])
 const complexList = ref([])
@@ -32,6 +34,9 @@ const complexDongGroupList = ref([])
 const emit = defineEmits(['saleList', 'complexList'])
 
 const path = "http://localhost:8080/where-is-my-home/api/v1";
+
+
+
 
 function getSidoList() {
   console.log("http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/sido");
@@ -223,11 +228,24 @@ const onLoadKakaoMap = (mapRef) => {
 
   console.log(map.value.getCenter().getLat());
 
-  getAptSaleList(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-  getComplexList(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-  getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-  getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
-  getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+  if (props.keyword) {
+    console.log("keyword!!");
+    getComplexListByKeyword(level, props.keyword);
+    getSaleListByKeyword(props.keyword);
+    
+
+  }
+  else {
+    console.log("non keyword");
+    getAptSaleList(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+    getComplexList(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+    getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+    getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+    getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+
+  }
+
+  
 
 
 
@@ -280,6 +298,10 @@ function getComplexListByDongCode(dongCode) {
   .then((response) => {
     complexList.value = response['data'];
     console.log(complexList.value[0]);
+
+    lat.value = complexList.value[0].lat;
+    lng.value = complexList.value[0].lng;
+
     emit('complexList', complexList.value);
   }).catch((response) => {
     console.log('단지 조회 실패');
@@ -292,6 +314,9 @@ function getSaleListByDongCode(dongCode) {
   .then((response) => {
     saleList.value = response['data'];
     console.log(saleList.value[0]);
+
+
+    
     emit('saleList', saleList.value);
   }).catch((response) => {
     console.log('단지 조회 실패');
@@ -307,6 +332,50 @@ watch(dong, (newValue, oldValue)=>{
 });
 
 getSidoList();
+
+
+function getComplexListByKeyword(level, keyword) {
+  const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/complexes/keyword/${keyword}`
+  axios.get(path)
+  .then((response) => {
+    complexList.value = response['data'];
+    console.log(complexList.value[0]);
+
+    lat.value = complexList.value[0].lat;
+    lng.value = complexList.value[0].lng;
+    
+
+    let bounds = map.value.getBounds();
+    // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
+    let swLatLng = bounds.getSouthWest();
+    // 영역의 북동쪽 좌표를 얻어옵니다
+    let neLatLng = bounds.getNorthEast();
+
+    getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+    getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+    getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+
+    emit('complexList', complexList.value);
+  }).catch((response) => {
+    console.log('단지 조회 실패');
+  });
+}
+
+function getSaleListByKeyword(keyword) {
+  const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/sale-articles?keyword=${keyword}`
+  axios.get(path)
+  .then((response) => {
+    saleList.value = response['data'];
+    console.log(saleList.value[0]);
+
+    emit('saleList', saleList.value);
+  }).catch((response) => {
+    console.log('키워드 매물 조회 실패');
+  });
+}
+
+
+
 
 </script>
 
@@ -360,7 +429,7 @@ getSidoList();
     </div>
     <div class="row ms-0 me-0" style="width: 100%; height: 90%">
       <div class="row align-items-stretch justify-content-center h-100" style="width: 100%; height: 100%">
-        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" @onLoadKakaoMap="onLoadKakaoMap" :draggable="true"
+        <KakaoMap :lat="lat" :lng="lng" @onLoadKakaoMap="onLoadKakaoMap" :draggable="true"
           style="width: 100%; height: 100%">
           <!-- v-for을 사용하여 saleList의 각 요소에 대해 마커를 생성합니다. -->
           <KakaoMapMarker v-for="(item, index) in complexList" :key="index" :lat="item.lat" :lng="item.lng" :image="{

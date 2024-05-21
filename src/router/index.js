@@ -58,9 +58,16 @@ const router = createRouter({
       component: NewPasswordView,
     },
     {
-      path: "/apt",
-      name: "apt",
+      path: '/apt',
+      name: 'apt',
       component: AptView,
+      props: true,
+    },
+    {
+      path: '/apt/:keyword',
+      name: 'aptKeyword',
+      component: AptView,
+      props: true,
     },
     {
       path: "/apt-detail",
