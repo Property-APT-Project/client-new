@@ -102,6 +102,31 @@ async function sendData() {
                     id="title"
                   />
                 </div>
+                <div class="row">
+                  <div class="col d-flex justify-content-center">
+                    <img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNcLkQF3V0hTnbAu90VnMxQuakrYjPRZewRZbKGvC2zg&s"
+                      id="profileImage"
+                      class="card-img img-thumbnail"
+                      alt="..."
+                    />
+                  </div>
+                  <div class="d-flex mt-2 justify-content-center">
+                    <label class="btn btn-light text-primary text-nowrap">
+                      썸네일 등록
+                      <input
+                        hidden
+                        ref="image"
+                        id="profileImageInput"
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        multiple="multiple"
+                        @change="uploadImage"
+                      />
+                    </label>
+                  </div>
+                </div>
                 <div class="mb-3">
                   <label for="content" class="form-label">내용</label>
                   <v-md-editor

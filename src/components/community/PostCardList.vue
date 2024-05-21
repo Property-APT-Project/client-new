@@ -38,6 +38,7 @@ const postStore = usePostStore();
 // onUnmounted(() => {
 //   window.removeEventListener("scroll", handleScroll);
 // });
+
 const fetchPosts = () => {
   axios
     .get(VITE_APP_API_POST)

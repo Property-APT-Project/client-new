@@ -26,7 +26,7 @@ import AptDetailView from "./views/AptDetailView.vue";
     data-header-position="fixed"
     style="background-color: #f4f7fb"
   >
-    <Header></Header>
+    <Header v-if="!$route.meta.hideHeader"></Header>
     <!-- <MainView /> -->
     <!-- <AptView />
     <AptDetailView /> -->

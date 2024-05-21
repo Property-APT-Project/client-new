@@ -25,7 +25,11 @@ const loadMorePosts = () => {
     window.innerHeight + window.scrollY >=
     document.documentElement.scrollHeight - 1
   ) {
-    if (!postStore.loading && postStore.hasMore) {
+    if (
+      !postStore.loading &&
+      postStore.hasMore &&
+      (isAuthenticated.value || postStore.page <= 2)
+    ) {
       isLoading.value = true;
       postStore.fetchPosts().then(() => {
         isLoading.value = false;
@@ -35,7 +39,6 @@ const loadMorePosts = () => {
 };
 
 const handleScroll = () => {
-  console.log(isLoading.value);
   if (!isLoading.value) {
     loadMorePosts();
   }
