@@ -29,9 +29,12 @@ const goToDetail = () => {
             <div class="col-9">
               <h5 class="omyu_pretty">{{ info.aptName }}</h5>
             </div>
-            <div class="col-3">
-              <input type="checkbox" id="heart" />
-            </div>
+            <div class="col-3 p-0">
+            <a @click="" class="p-0" style="height: 50%; width: 50%; cursor: pointer;">
+              <img class="m-0" src="@/assets/icons/icon-heart.png" style="width: 50%;" />
+            </a>
+          </div>
+
           </div>
 
           <h6 class="">{{ info.price }} 만원</h6>
