@@ -6,11 +6,11 @@ const props = defineProps({
 });
 
 const router = useRouter();
+
+console.log(props.info);
 const goToDetail = () => {
-  router.push({
-    path: '/apt-detail',
-    query: { info: JSON.stringify(props.info) } // info 객체를 JSON 문자열로 변환하여 전달
-  });
+  router.push({ name: 'apt-detail-id', params: { id: props.info.id } });
+
 };
 
 </script>

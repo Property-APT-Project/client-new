@@ -13,7 +13,7 @@ const props = defineProps({
                 <h3 class="fw-semibold">{{ complex.aptName }}</h3>
             </div>
             <div class="mb-4" style="margin-right: 0;">
-                <h4 class="fw-semibold">매매 {{ sale[0].price }}</h4>
+                <h4 class="fw-semibold">매매 {{ sale.price }}</h4>
             </div>
             <div class="row w-90 m-2 mt-3">
                 <div class="col-3 p-0 m-0 align-items-center w-100">

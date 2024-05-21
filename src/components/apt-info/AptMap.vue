@@ -361,6 +361,7 @@ function getSaleListByDongCode(dongCode) {
 
 watch(dong, (newValue, oldValue) => {
   const code = newValue.substr(0, 8);
+  console.log(code);
   getComplexListByDongCode(newValue);
   getSaleListByDongCode(code);
 

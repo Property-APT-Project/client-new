@@ -9,7 +9,7 @@ const props = defineProps({
 
 onMounted(() => {
   console.log("Component mounted");
-  console.log(props.saleInfo[0].aptName);
+  console.log(props.saleInfo.aptName);
 });
 </script>
 
@@ -18,7 +18,7 @@ onMounted(() => {
     <div class="card-body p-4">
       <div class="row">
         <div class="col-6 p-3">
-          <Photo :photoSrc="saleInfo[0].img1" />
+          <Photo :photoSrc="saleInfo.img1" />
         </div>
         <div class="col-6">
           <div class="row p-3">

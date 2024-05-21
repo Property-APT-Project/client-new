@@ -19,7 +19,7 @@ const props = defineProps({
                 </div>
               </td>
               <td>
-                <span>{{ sale[0].description }}</span>
+                <span>{{ sale.description }}</span>
               </td>
             </tr>
 
@@ -30,7 +30,7 @@ const props = defineProps({
                 </div>
               </td>
               <td>
-                <span>{{sale[0].size}}</span>
+                <span>{{sale.size}}</span>
               </td>
             </tr>
 
@@ -41,7 +41,7 @@ const props = defineProps({
                 </div>
               </td>
               <td>
-                <span>{{sale[0].floor}}</span>
+                <span>{{sale.floor}}</span>
               </td>
             </tr>
 
@@ -52,7 +52,7 @@ const props = defineProps({
                 </div>
               </td>
               <td>
-                <span v-if="sale[0].maintenance_cost != '없음'">{{sale[0].maintenance_cost}}원</span>
+                <span v-if="sale.maintenance_cost != '없음'">{{sale.maintenance_cost}}원</span>
                 <span v-else>없음</span>
               </td>
             </tr>
