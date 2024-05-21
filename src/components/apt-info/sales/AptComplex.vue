@@ -3,10 +3,20 @@ const props = defineProps({
   info: Object,
 });
 
-const emit = defineEmits(["response"]);
+const emit = defineEmits(["response", "dealInfo"]);
 function clickComplexButton(info) {
   emit("response", info);
 }
+
+import { inject } from 'vue';
+
+const toggleModal = inject('toggleModal');
+
+const openModal = () => {
+  toggleModal();
+  emit("dealInfo", props.info);
+  console.log(props.info)
+};
 </script>
 
 <template>
@@ -33,6 +43,7 @@ function clickComplexButton(info) {
                   class="p-1 w-100 rounded-pill bg-light text-gray align-self-center"
                   type="submit"
                   style="font-size: 12px; border: none"
+                  @click="openModal"
                 >
                   실거래가 조회
                 </button>

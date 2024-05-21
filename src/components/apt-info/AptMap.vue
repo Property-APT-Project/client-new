@@ -15,7 +15,7 @@ const isSelectedI2 = ref(false);
 const isSelectedP1 = ref(false);
 const isSelectedQ1 = ref(false);
 
-watch(isSelectedI2, (newValue, oldValue)=>{
+watch(isSelectedI2, (newValue, oldValue) => {
   let level = map.value.getLevel();
   let bounds = map.value.getBounds();
   // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
@@ -25,7 +25,7 @@ watch(isSelectedI2, (newValue, oldValue)=>{
   getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
 })
 
-watch(isSelectedP1, (newValue, oldValue)=>{
+watch(isSelectedP1, (newValue, oldValue) => {
   let level = map.value.getLevel();
   let bounds = map.value.getBounds();
   // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
@@ -35,7 +35,7 @@ watch(isSelectedP1, (newValue, oldValue)=>{
   getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
 })
 
-watch(isSelectedQ1, (newValue, oldValue)=>{
+watch(isSelectedQ1, (newValue, oldValue) => {
   let level = map.value.getLevel();
   let bounds = map.value.getBounds();
   // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
@@ -73,42 +73,42 @@ const path = "http://localhost:8080/where-is-my-home/api/v1";
 function getSidoList() {
   console.log("http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/sido");
   axios.get("http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/sido")
-  .then((response) =>{
-    sidoList.value = response['data'];
-    console.log("sidoList");
-    console.log(sidoList.value);
-  })
-  .catch(() =>{
-    console.log("시도 조회 실패");
-  })
+    .then((response) => {
+      sidoList.value = response['data'];
+      console.log("sidoList");
+      console.log(sidoList.value);
+    })
+    .catch(() => {
+      console.log("시도 조회 실패");
+    })
 }
 
 function getGugunList(sido) {
   const path = `http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/gugun/${sido}`
   console.log(path);
   axios.get(path)
-  .then((response) =>{
-    gugunList.value = response['data'];
-    console.log("gugunList");
-    console.log(gugunList.value);
-  })
-  .catch(() =>{
-    console.log("구군 조회 실패");
-  })
+    .then((response) => {
+      gugunList.value = response['data'];
+      console.log("gugunList");
+      console.log(gugunList.value);
+    })
+    .catch(() => {
+      console.log("구군 조회 실패");
+    })
 }
 
 function getDongList(gugun) {
   const path = `http://localhost:8080/where-is-my-home/api/v1/dong-code/dong-code/dong/${gugun}`
   console.log(path);
   axios.get(path)
-  .then((response) =>{
-    dongList.value = response['data'];
-    console.log("dongList");
-    console.log(dongList.value);
-  })
-  .catch(() =>{
-    console.log("동 조회 실패");
-  })
+    .then((response) => {
+      dongList.value = response['data'];
+      console.log("dongList");
+      console.log(dongList.value);
+    })
+    .catch(() => {
+      console.log("동 조회 실패");
+    })
 }
 
 function getAptSaleList(level, sLat, eLat, sLng, eLng) {
@@ -127,7 +127,7 @@ function getAptSaleList(level, sLat, eLat, sLng, eLng) {
 
 const commericalP1 = ref([])
 function getCommericalDataP1(level, sLat, eLat, sLng, eLng) {
-  if (level >= 5){
+  if (level >= 5) {
     commericalP1.value = [];
     return;
   }
@@ -155,7 +155,7 @@ function getCommericalDataP1(level, sLat, eLat, sLng, eLng) {
 // 병원 정보 불러오기
 const commericalQ1 = ref([])
 function getCommericalDataQ1(level, sLat, eLat, sLng, eLng) {
-  if (level >= 5){
+  if (level >= 5) {
     commericalQ1.value = [];
     return;
   }
@@ -183,7 +183,7 @@ function getCommericalDataQ1(level, sLat, eLat, sLng, eLng) {
 
 const commericalI2 = ref([])
 function getCommericalDataI2(level, sLat, eLat, sLng, eLng) {
-  if (level >= 5){
+  if (level >= 5) {
     commericalI2.value = [];
     return;
   }
@@ -265,7 +265,7 @@ const onLoadKakaoMap = (mapRef) => {
     console.log("keyword!!");
     getComplexListByKeyword(level, props.keyword);
     getSaleListByKeyword(props.keyword);
-    
+
 
   }
   else {
@@ -280,7 +280,7 @@ const onLoadKakaoMap = (mapRef) => {
   getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
   getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
 
-  
+
 
 
 
@@ -316,12 +316,12 @@ const onLoadKakaoMap = (mapRef) => {
   });
 };
 
-watch(sido, (newValue, oldValue)=>{
+watch(sido, (newValue, oldValue) => {
   getGugunList(newValue);
   console.log(newValue);
 })
 
-watch(gugun, (newValue, oldValue)=>{
+watch(gugun, (newValue, oldValue) => {
   getDongList(newValue);
   console.log(newValue);
 })
@@ -330,37 +330,37 @@ watch(gugun, (newValue, oldValue)=>{
 function getComplexListByDongCode(dongCode) {
   const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/complexes/dong-code/${dongCode}`
   axios.get(path)
-  .then((response) => {
-    complexList.value = response['data'];
-    console.log(complexList.value[0]);
+    .then((response) => {
+      complexList.value = response['data'];
+      console.log(complexList.value[0]);
 
-    lat.value = complexList.value[0].lat;
-    lng.value = complexList.value[0].lng;
+      lat.value = complexList.value[0].lat;
+      lng.value = complexList.value[0].lng;
 
-    emit('complexList', complexList.value);
-  }).catch((response) => {
-    console.log('단지 조회 실패');
-  });
+      emit('complexList', complexList.value);
+    }).catch((response) => {
+      console.log('단지 조회 실패');
+    });
 }
 
 function getSaleListByDongCode(dongCode) {
   const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/sale-articles/dong-code/${dongCode}`
   axios.get(path)
-  .then((response) => {
-    saleList.value = response['data'];
-    console.log(saleList.value[0]);
+    .then((response) => {
+      saleList.value = response['data'];
+      console.log(saleList.value[0]);
 
 
-    
-    emit('saleList', saleList.value);
-  }).catch((response) => {
-    console.log('단지 조회 실패');
-  });
+
+      emit('saleList', saleList.value);
+    }).catch((response) => {
+      console.log('단지 조회 실패');
+    });
 }
 
 
-watch(dong, (newValue, oldValue)=>{
-  const code = newValue.substr(0,8);
+watch(dong, (newValue, oldValue) => {
+  const code = newValue.substr(0, 8);
   getComplexListByDongCode(newValue);
   getSaleListByDongCode(code);
 
@@ -372,33 +372,33 @@ getSidoList();
 function getComplexListByKeyword(level, keyword) {
   const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/complexes/keyword/${keyword}`
   axios.get(path)
-  .then((response) => {
-    complexList.value = response['data'];
-    console.log(complexList.value[0]);
+    .then((response) => {
+      complexList.value = response['data'];
+      console.log(complexList.value[0]);
 
-    lat.value = complexList.value[0].lat;
-    lng.value = complexList.value[0].lng;
-    
+      lat.value = complexList.value[0].lat;
+      lng.value = complexList.value[0].lng;
 
-    let bounds = map.value.getBounds();
-    // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
-    let swLatLng = bounds.getSouthWest();
-    // 영역의 북동쪽 좌표를 얻어옵니다
-    let neLatLng = bounds.getNorthEast();
 
-    emit('complexList', complexList.value);
-  }).catch((response) => {
-    console.log('단지 조회 실패');
-  });
+      let bounds = map.value.getBounds();
+      // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
+      let swLatLng = bounds.getSouthWest();
+      // 영역의 북동쪽 좌표를 얻어옵니다
+      let neLatLng = bounds.getNorthEast();
 
-  watch(lat, ()=>{
+      emit('complexList', complexList.value);
+    }).catch((response) => {
+      console.log('단지 조회 실패');
+    });
+
+  watch(lat, () => {
     let level = map.value.getLevel();
     let bounds = map.value.getBounds();
     // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
     let swLatLng = bounds.getSouthWest();
     // 영역의 북동쪽 좌표를 얻어옵니다
     let neLatLng = bounds.getNorthEast();
-    
+
     getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
     getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
     getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
@@ -410,14 +410,14 @@ function getComplexListByKeyword(level, keyword) {
 function getSaleListByKeyword(keyword) {
   const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/sale-articles?keyword=${keyword}`
   axios.get(path)
-  .then((response) => {
-    saleList.value = response['data'];
-    console.log(saleList.value[0]);
+    .then((response) => {
+      saleList.value = response['data'];
+      console.log(saleList.value[0]);
 
-    emit('saleList', saleList.value);
-  }).catch((response) => {
-    console.log('키워드 매물 조회 실패');
-  });
+      emit('saleList', saleList.value);
+    }).catch((response) => {
+      console.log('키워드 매물 조회 실패');
+    });
 }
 
 watch(() => props.selectLat, (newLat) => {
@@ -448,10 +448,11 @@ watch(() => props.selectLng, (newLng) => {
               <option v-for="(item, index) in sidoList" :key="index" :value="item.dongCode">{{ item.sidoName }}</option>
             </select>
           </div>
-          <div  class="col-4 p-0">
+          <div class="col-4 p-0">
             <select v-model="gugun" class="form-select" style="height: 100%;">
               <option value="" selected disabled hidden>구군</option>
-              <option v-for="(item, index) in gugunList" :key="index" :value="item.dongCode">{{ item.gugunName }}</option>
+              <option v-for="(item, index) in gugunList" :key="index" :value="item.dongCode">{{ item.gugunName }}
+              </option>
             </select>
           </div>
           <div class="col-4 p-0">
@@ -468,18 +469,18 @@ watch(() => props.selectLng, (newLng) => {
       <div class="col-1 m-0 p-0" style="height: 100%;">
         <div class="row" style="height: 100%;">
           <div class="col-3 bg-light p-0 ms-1">
-            <a @click="isSelectedI2=!isSelectedI2" class="p-0" style="height: 100%; width: 100%;">
-              <img class="m-0" src="@/assets/icons/marker-food.png" style="width: 100%; height: 90%;"/>
+            <a @click="isSelectedI2 = !isSelectedI2" class="p-0" style="height: 100%; width: 100%; cursor: pointer;">
+              <img class="m-0" src="@/assets/icons/marker-food.png" style="width: 100%; height: 90%;" />
             </a>
           </div>
           <div class="col-3 bg-light p-0 ms-1">
-            <a @click="isSelectedQ1=!isSelectedQ1" class="p-0" style="height: 100%; width: 100%;">
-              <img class="m-0" src="@/assets/icons/marker-hospital.png" style="width: 100%; height: 90%;"/>
+            <a @click="isSelectedQ1 = !isSelectedQ1" class="p-0" style="height: 100%; width: 100%; cursor: pointer;">
+              <img class="m-0" src="@/assets/icons/marker-hospital.png" style="width: 100%; height: 90%;" />
             </a>
           </div>
           <div class="col-3 bg-light p-0 ms-1">
-            <a @click="isSelectedP1=!isSelectedP1" class="p-0" style="height: 100%; width: 100%;">
-              <img class="m-0" src="@/assets/icons/marker-school.png" style="width: 100%; height: 90%;"/>
+            <a @click="isSelectedP1 = !isSelectedP1" class="p-0" style="height: 100%; width: 100%; cursor: pointer;">
+              <img class="m-0" src="@/assets/icons/marker-school.png" style="width: 100%; height: 90%;" />
             </a>
           </div>
         </div>
@@ -494,31 +495,34 @@ watch(() => props.selectLng, (newLng) => {
             imageSrc: '../../src/assets/icons/house-marker.png',
             imageWidth: 40,
             imageHeight: 40,
-            imageOption: {}
+            imageOption: {},
+
           }"></KakaoMapMarker>
           <!-- <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker> -->
           <span v-if="isSelectedP1">
-          <KakaoMapMarker v-for="(item, index) in commericalP1" :key="index" :lat="item.lat" :lng="item.lon" :image="{
-            imageSrc: '../../src/assets/icons/marker-school.png',
-            imageWidth: 30,
-            imageHeight: 30,
-            imageOption: {}
-          }"></KakaoMapMarker></span>
+            <KakaoMapMarker v-for="(item, index) in commericalP1" :key="index" :lat="item.lat" :lng="item.lon" :image="{
+              imageSrc: '../../src/assets/icons/marker-school.png',
+              imageWidth: 30,
+              imageHeight: 30,
+              imageOption: {}
+            }"></KakaoMapMarker>
+          </span>
           <span v-if="isSelectedQ1">
-          <KakaoMapMarker v-for="(item, index) in commericalQ1" :key="index" :lat="item.lat" :lng="item.lon" :image="{
-            imageSrc: '../../src/assets/icons/marker-hospital.png',
-            imageWidth: 30,
-            imageHeight: 30,
-            imageOption: {}
-          }"></KakaoMapMarker>
+            <KakaoMapMarker v-for="(item, index) in commericalQ1" :key="index" :lat="item.lat" :lng="item.lon" :image="{
+              imageSrc: '../../src/assets/icons/marker-hospital.png',
+              imageWidth: 30,
+              imageHeight: 30,
+              imageOption: {}
+            }"></KakaoMapMarker>
           </span>
           <span v-if="isSelectedI2">
-          <KakaoMapMarker v-for="(item, index) in commericalI2" :key="index" :lat="item.lat" :lng="item.lon" :image="{
-            imageSrc: '../../src/assets/icons/marker-food.png',
-            imageWidth: 30,
-            imageHeight: 30,
-            imageOption: {}
-          }"></KakaoMapMarker></span>
+            <KakaoMapMarker v-for="(item, index) in commericalI2" :key="index" :lat="item.lat" :lng="item.lon" :image="{
+              imageSrc: '../../src/assets/icons/marker-food.png',
+              imageWidth: 30,
+              imageHeight: 30,
+              imageOption: {}
+            }"></KakaoMapMarker>
+          </span>
         </KakaoMap>
       </div>
     </div>

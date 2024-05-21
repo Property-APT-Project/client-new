@@ -16,7 +16,7 @@ import { ref, onMounted } from "vue";
 
 const route = useRoute();
 const saleInfo = JSON.parse(route.query.info);
-const complexInfo = ref([]);
+
 
 onMounted(async () => {
   await fetchComplexInfo(); // fetchComplexInfo 함수를 비동기로 호출하여 응답을 기다립니다.
@@ -33,7 +33,7 @@ saleOne.value.push(saleInfo);
 
 console.log(saleOne.value);
 
-
+const complexInfo = ref([]);
 const fetchComplexInfo = async () => {
   const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/complexes/detail-info/${saleInfo.aptName}?dongCode=${saleInfo.dongCode}00`;
 

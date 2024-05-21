@@ -11,12 +11,13 @@ const activeSale = ref(false);
 const activeComplex = ref(true);
 
 const currInfo = ref(null);
+const dealInfo = ref(null);
 
 const complexInterestList = ref([]);
 
 const props = defineProps({
   saleList:Array,
-  complexList:Array
+  complexList:Array,
 })
 
 const aptInterestList = ref([]);
@@ -40,7 +41,12 @@ const aptName = ref("");
 const selectedAptList = ref([]);
 // selectedAptList = saleList.value.filter((apt) => apt.aptName == aptName.value);
 
-const emit = defineEmits(["selectLat", "selectLng"]);
+const emit = defineEmits(["selectLat", "selectLng", "dealInfo"]);
+
+watch(dealInfo, (newInfo, prevInfo)=>{
+  emit("dealInfo", dealInfo.value);
+  console.log("dealInfo", dealInfo.value);
+})
 
 watch(currInfo, (newInfo, prevInfo) => {
   console.log(newInfo);
@@ -65,6 +71,15 @@ watch(currInfo, (newInfo, prevInfo) => {
     console.log('매물 조회 실패');
   });
 });
+
+
+import { inject } from 'vue';
+
+const toggleModal = inject('toggleModal');
+
+const handleOpenModal = () => {
+  toggleModal();
+};
 </script>
 
 <template>
@@ -95,7 +110,7 @@ watch(currInfo, (newInfo, prevInfo) => {
           <span v-else-if="activeSale"><apt-sale v-for="info in aptInterestList" :key="info.id" :info="info" />
           </span>
           <span v-else>
-            <apt-complex v-for="info in complexInterestList" @response="(info) => (currInfo = info)" :key="info.aptName"
+            <apt-complex v-for="info in complexInterestList" @dealInfo="(info)=>(dealInfo=info)"  @response="(info) => (currInfo = info)" :key="info.aptName"
               :info="info" />
           </span>
           <li v-if="!isSelectComplex">
@@ -110,7 +125,7 @@ watch(currInfo, (newInfo, prevInfo) => {
           </span>
           <span v-else-if="activeSale"><apt-sale v-for="info in saleList" :key="info.id" :info="info" /></span>
           <span v-else>
-            <apt-complex v-for="info in complexList" @response="(info) => (currInfo = info)" :key="info.aptName"
+            <apt-complex v-for="info in complexList" @dealInfo="(info)=>(dealInfo=info)" @response="(info) => (currInfo = info)" :key="info.aptName"
               :info="info" />
           </span>
         </ul>

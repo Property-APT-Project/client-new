@@ -69,6 +69,13 @@ const router = createRouter({
       component: AptView,
       props: true,
     },
+
+    {
+      path: "/apt-detail:id",
+      name: "apt-detail-id",
+      component: AptDetailView,
+      props: true,
+    },
     {
       path: "/apt-detail",
       name: "apt-detail",
