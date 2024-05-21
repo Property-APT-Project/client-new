@@ -7,8 +7,8 @@ import AptComplex from "@/components/apt-info/sales/AptComplex.vue";
 import MiniSearchBar from "../common/MiniSearchBar.vue";
 
 let id = 0;
-const activeSale = ref(true);
-const activeComplex = ref(false);
+const activeSale = ref(false);
+const activeComplex = ref(true);
 
 const currInfo = ref(null);
 

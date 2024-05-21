@@ -15,6 +15,36 @@ const isSelectedI2 = ref(false);
 const isSelectedP1 = ref(false);
 const isSelectedQ1 = ref(false);
 
+watch(isSelectedI2, (newValue, oldValue)=>{
+  let level = map.value.getLevel();
+  let bounds = map.value.getBounds();
+  // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
+  let swLatLng = bounds.getSouthWest();
+  // 영역의 북동쪽 좌표를 얻어옵니다
+  let neLatLng = bounds.getNorthEast();
+  getCommericalDataI2(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+})
+
+watch(isSelectedP1, (newValue, oldValue)=>{
+  let level = map.value.getLevel();
+  let bounds = map.value.getBounds();
+  // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
+  let swLatLng = bounds.getSouthWest();
+  // 영역의 북동쪽 좌표를 얻어옵니다
+  let neLatLng = bounds.getNorthEast();
+  getCommericalDataP1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+})
+
+watch(isSelectedQ1, (newValue, oldValue)=>{
+  let level = map.value.getLevel();
+  let bounds = map.value.getBounds();
+  // 영역 남서쪽 좌표 swLatLng.getLat() swLatLng.getLng()
+  let swLatLng = bounds.getSouthWest();
+  // 영역의 북동쪽 좌표를 얻어옵니다
+  let neLatLng = bounds.getNorthEast();
+  getCommericalDataQ1(level, swLatLng.getLat(), neLatLng.getLat(), swLatLng.getLng(), neLatLng.getLng());
+})
+
 const sido = ref('')
 const gugun = ref('')
 const dong = ref('')
