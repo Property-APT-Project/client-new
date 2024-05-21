@@ -20,7 +20,7 @@ const openModal = () => {
 </script>
 
 <template>
-  <li class="sidebar-item mb-3">
+  <li class="sidebar-item mb-3 me-3 pe-3">
     
       <div class="row bg-gray p-3" style="background-color: white">
         

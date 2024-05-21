@@ -6,11 +6,13 @@ const props = defineProps({
   complex: Object
 });
 
-const PriceList = ref([])
+
 
 console.log("price page");
 console.log(props.complex);
 
+
+const PriceList = ref([])
 // axios 인스턴스 생성
 const apiClient = axios.create({
   baseURL: 'https://cors-anywhere.herokuapp.com/https://new.land.naver.com/api'

@@ -16,7 +16,7 @@ const goToDetail = () => {
 </script>
 
 <template>
-  <li class="sidebar-item mb-3" @click="goToDetail">
+  <li class="sidebar-item mb-3 me-3 pe-3" @click="goToDetail">
     <a class="" href="#">
       <div class="row bg-gray p-3" style="background-color: white">
         <div class="col-5 d-flex">

@@ -100,7 +100,7 @@ const handleOpenModal = () => {
           </li>
         </ul>
       </nav>
-      <div class="sidebar-nav scrollspy-example" style="overflow: scroll; height: 80%;">
+      <div class="sidebar-nav scrollspy-example me-2" style="overflow: scroll; height: 80%;">
         <ul id="sidebarnav">
           <li v-if="!isSelectComplex" class="nav-small-cap">
             <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
