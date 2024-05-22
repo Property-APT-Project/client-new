@@ -16,9 +16,15 @@ const dealInfo = ref(null);
 const complexInterestList = ref([]);
 
 const props = defineProps({
-  saleList:Array,
-  complexList:Array,
+  saleList:Object,
+  complexList:Object,
+  interestSaleList: Object,
+  interestComplexList:Object,
+  nonInterestSaleList: Object,
+  nonInterestComplexList:Object
 })
+
+console.log(props);
 
 const aptInterestList = ref([]);
 const aptNonInterestList = ref([]);
@@ -107,12 +113,13 @@ const handleOpenModal = () => {
             <span class="hide-menu">Interest</span>
           </li>
           <span v-if="isSelectComplex"> </span>
-          <span v-else-if="activeSale"><apt-sale v-for="info in aptInterestList" :key="info.id" :info="info" />
+          <span v-else-if="activeSale"><apt-sale v-for="info in interestSaleList" :key="info.id" :info="info" />
           </span>
           <span v-else>
-            <apt-complex v-for="info in complexInterestList" @dealInfo="(info)=>(dealInfo=info)"  @response="(info) => (currInfo = info)" :key="info.aptName"
+            <apt-complex v-for="info in interestComplexList" @dealInfo="(info)=>(dealInfo=info)"  @response="(info) => (currInfo = info)" :key="info.aptName"
               :info="info" />
           </span>
+
           <li v-if="!isSelectComplex">
             <span class="sidebar-divider lg"></span>
           </li>
@@ -123,23 +130,13 @@ const handleOpenModal = () => {
           <span v-if="isSelectComplex">
             <apt-sale v-for="info in selectedAptList" :key="info.id" :info="info" />
           </span>
-          <span v-else-if="activeSale"><apt-sale v-for="info in saleList" :key="info.id" :info="info" /></span>
+          <span v-else-if="activeSale"><apt-sale v-for="info in nonInterestSaleList" :key="info.id" :info="info" :interest="false" /></span>
           <span v-else>
-            <apt-complex v-for="info in complexList" @dealInfo="(info)=>(dealInfo=info)" @response="(info) => (currInfo = info)" :key="info.aptName"
+            <apt-complex v-for="info in nonInterestComplexList" @dealInfo="(info)=>(dealInfo=info)" @response="(info) => (currInfo = info)" :key="info.aptName"
               :info="info" />
           </span>
         </ul>
       </div>
-
-      <!-- <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-      </nav> -->
     </div>
   </div>
 </template>

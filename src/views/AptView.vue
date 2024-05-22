@@ -9,59 +9,39 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const router = useRouter();
 onBeforeMount(() => {
-  getData();
-  // presentData.value = formData.value
+  getInterestSale();
+  getInterestComplex();
 });
 
-const {
-  VITE_APP_API_URL,
-  VITE_APP_LOGIN,
-  VITE_APP_PROFILE,
-  VITE_APP_API_MEMBER_UPLOAD,
-  VITE_APP_MEMBER_DELETE,
-  VITE_APP_LOGOUT,
-} = import.meta.env;
-// const router = useRouter();
-const formData = ref({
-  email: "",
-  name: "",
-  address: "",
-  phoneNumber: "",
-  imgURL: "",
-});
-
-const presentData = ref({
-  email: "",
-  name: "",
-  address: "",
-  phoneNumber: "",
-  imgURL: "",
-});
-
-const isModify = ref(false);
+const saleList = ref([]);
+const complexList = ref([])
 
 const token = useTokenStore();
 
-console.log(token.accessToken);
-console.log(token.refreshToken);
+const interestSaleList = ref([])
+const nonInterestSaleList = ref([])
+const interestSaleNameList = ref([])
+const interestComplexList = ref([])
+const nonInterestComplexList = ref([])
+const interestComplexNameList = ref([])
 
-async function getData() {
+async function getInterestSale() {
   const tokenCookie = Cookies.get("authToken");
   const token = JSON.parse(tokenCookie);
 
-  const complexPath = "http://localhost:8080/where-is-my-home/interest/list/complex";
+  const complexPath = "http://localhost:8080/where-is-my-home/interest/list/sale";
 
-  axios.get(complexPath, {
+  await axios.get(complexPath, {
       headers: {
         Authorization: "Bearer " + token.accessToken,
       },
     })
     .then((response) => {
       console.log("SUCCESS");
-      console.log(response.data);
-      presentData.value = response.data;
+
+      interestSaleNameList.value = response.data.map(sale => sale.interestId);
+      console.log(interestSaleNameList.value);
       // TODO
       // router.replace({ name: "community" });
     })
@@ -72,13 +52,91 @@ async function getData() {
 }
 
 
+async function getInterestComplex() {
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
+
+  const complexPath = "http://localhost:8080/where-is-my-home/interest/list/complex";
+
+  await axios.get(complexPath, {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    })
+    .then((response) => {
+      console.log("SUCCESS");
+
+      interestComplexNameList.value = response.data.map(complex => complex.interestId);
+      console.log(interestComplexNameList.value);
+    })
+    .catch((error) => {
+      console.error("Error:");
+    });
+}
+
+
+watch(saleList, (newValue, oldValue) => {
+  getInterestSale();
+
+  console.log("add flag");
+  console.log(saleList.value);
+  console.log(interestSaleNameList.value);
+  
+  interestSaleList.value = [];
+  nonInterestSaleList.value = [];
+
+  saleList.value.forEach(addFlagInterestSale);
+
+  console.log("add flag");
+  console.log(saleList.value);
+})
+
+watch(complexList, (newValue, oldValue) => {
+  getInterestComplex();
+  
+  console.log("add comp flag-before");
+  console.log(complexList.value);
+  console.log(interestComplexNameList.value);
+
+  interestComplexList.value = [];
+  nonInterestComplexList.value = [];
+  
+  complexList.value.forEach(addFlagInterestComplex);
+
+  console.log("add comp flag-after");
+  console.log(complexList.value);
+})
+
+
+function addFlagInterestSale(sale) {
+  if (interestSaleNameList.value.includes(sale.id)) {
+    sale.interest = true;
+    interestSaleList.value.push(sale);
+    
+  }
+  else{
+    sale.interest = false;
+    nonInterestSaleList.value.push(sale);
+  }
+}
+
+function addFlagInterestComplex(complex) {
+  if (interestComplexNameList.value.includes(complex.aptName)) {
+    complex.interest = true;
+    interestComplexList.value.push(complex);
+    
+  }
+  else{
+    complex.interest = false;
+    nonInterestComplexList.value.push(complex);
+  }
+}
 
 
 
 
 
-const saleList = ref([]);
-const complexList = ref([])
+
 
 const props = defineProps(['keyword']);
 console.log("keyword", props.keyword);
@@ -112,6 +170,10 @@ watch(dealInfo, (newValue, oldValue) =>{
     <div class="row" style="height: 100vh">
       <LeftSideVue :saleList="saleList"
       :complexList="complexList"
+      :non-interest-complex-list="nonInterestComplexList"
+      :non-interest-sale-list="nonInterestSaleList"
+      :interestComplexList="interestComplexList"
+      :interestSaleList="interestSaleList"
       @selectLat="(lat) => selectLat = lat"
       @selectLng="(lng) => selectLng = lng"
       @dealInfo="(info) => dealInfo = info"
