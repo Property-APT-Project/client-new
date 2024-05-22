@@ -1,6 +1,8 @@
 <script setup>
 import FocusedMap from "@/components/common/FocusedMap.vue";
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
+import { useRoute, useRouter } from 'vue-router';
+
 const coordinate = {
   lat: 37.537547,
   lng: 127.010049,
@@ -10,10 +12,17 @@ const props = defineProps({
   sale: Object
 });
 
+const router = useRouter();
+
+const goToDetail = () => {
+  router.push({ name: 'apt-detail-id', params: { id: props.sale.id } });
+
+};
+
 </script>
 
 <template>
-  <div class="card h-50" style="width: 100%;">
+  <div class="card h-50" style="width: 100%;" @click="">
     <!-- <div class="card-body"> -->
     <div class="row card-body" style="width: 100%; padding: 0; margin-left: 0;">
       <div class="col-6 p-0 m-0">
@@ -39,7 +48,7 @@ const props = defineProps({
     
 
     <!-- </div> -->
-    <div class="row card-body pt-3 pb-3" style="width: 100%; padding: 0; margin-left: 0;">
+    <div class="row card-body pt-3 pb-3" style="width: 100%; padding: 0; margin-left: 0;cursor: pointer;" @click="goToDetail">
       <h5 class="card-title text-center">{{ sale.aptName }}</h5>
       <p class="card-text text-info text-center">{{ sale.description }}</p>
     </div>

@@ -166,8 +166,10 @@ const coordinate = {
 <template>
   <div class="body-wrapper ms-0 me-0">
     <div class="body-wrapper-inner mb-6 container-fluid w-100">
-      <nav class="tap d-flex justify-content-between">
-        <h1 class="">관심 단지 / 지역</h1>
+      <h1 class="p-0 mt-3 mb-0 omyu_pretty">관심 매물 / 단지</h1>
+
+      <nav class="tap d-flex justify-content-end">
+         
         <ul class="nav nav-tabs ">
           <li class="nav-item">
             <button
@@ -187,15 +189,15 @@ const coordinate = {
           </li>
         </ul>
       </nav>
-      <div v-if="activeSale" class="card-group card-group-scroll">
+      <div v-if="activeSale" class="card-group card-group-scroll" style="margin-bottom: 10%;">
         <SaleInterestCard v-for="sale in interestSaleList" :key="sale.interestId" :sale="sale" />
 
       </div>
       <div v-else class="card-group card-group-scroll">
-        <ComplexInterestCard />
+        <ComplexInterestCard v-for="complex in interestComplexList" :key="complex.interestId" :complex="complex" />
       </div>
       
-      <h1>나의 글</h1>
+      <h1 class="p-0 mt-3 mb-3 omyu_pretty">나의 글</h1>
       <MyFeedPostList />
     </div>
   </div>
