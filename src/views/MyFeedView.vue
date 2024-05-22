@@ -1,13 +1,111 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import AptInterestCard from "@/components/my-feed/interest/AptInterestCard.vue";
-import AreaInterestCard from "@/components/my-feed/interest/AreaInterestCard.vue";
+import SaleInterestCard from "@/components/my-feed/interest/SaleInterestCard.vue";
+import ComplexInterestCard from "@/components/my-feed/interest/ComplexInterestCard.vue";
 import AptSale from "@/components/apt-info/sales/AptSale.vue";
 import PostCard from "@/components/community/PostCard.vue";
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 import PostCardFeed from "@/components/community/PostCardFeed.vue";
 import MyFeedPostList from "@/components/my-feed/MyFeedPostList.vue";
+import Cookies from "js-cookie";
+import { useTokenStore } from "@/stores/token";
+
+const interestSaleList = ref([])
+const interestSaleIdList = ref([])
+const interestComplexList = ref([])
+const interestComplexNameList = ref([])
+
+async function getInterestSaleInfo(id){
+  const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/sale-articles/id/${id}`;
+
+  await axios.get(path)
+    .then((response) => {
+      console.log("SUCCESS Interest Sale Info");
+
+      interestSaleList.value.push(response.data[0]);
+      console.log(interestSaleList.value);
+    })
+    .catch((error) => {
+      console.error("Error:");
+      // router.replace({ name: "community" });
+    });
+  
+
+}
+
+async function getInterestSale() {
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
+
+  const complexPath = "http://localhost:8080/where-is-my-home/interest/list/sale";
+
+  await axios.get(complexPath, {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    })
+    .then((response) => {
+      console.log("SUCCESS Interest Sale");
+
+      interestSaleIdList.value = response.data.map(sale => sale.interestId);
+
+      interestSaleIdList.value.forEach(getInterestSaleInfo);
+      const tmp = ref(interestSaleList.value);
+      interestSaleList.value = tmp.value;
+
+      console.log("info!!");
+      // console.log(interestSaleList.value);
+      // console.log(interestSaleIdList.value);
+    })
+    .catch((error) => {
+      console.error("Error:");
+      // router.replace({ name: "community" });
+    });
+}
+
+async function getInterestComplex() {
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
+
+  const complexPath = "http://localhost:8080/where-is-my-home/interest/list/complex";
+
+  await axios.get(complexPath, {
+      headers: {
+        Authorization: "Bearer " + token.accessToken,
+      },
+    })
+    .then((response) => {
+      console.log("SUCCESS Complex");
+
+      interestComplexList.value = response.data;
+      console.log(interestComplexList.value);
+
+      // interestComplexNameList.value = response.data.map(complex => complex.interestId);
+      // console.log(interestComplexNameList.value);
+    })
+    .catch((error) => {
+      console.error("Error:");
+    });
+}
+
+async function getInterestComplexDetailInfo(complex) {
+  const complexPath = `http://localhost:8080/where-is-my-home/api/v1/house-info/complexes/keyword/${complex}`;
+
+  await axios.get(complexPath)
+    .then((response) => {
+      console.log("SUCCESS Complex Detail");
+      console.log(response.data)
+
+      interestComplexNameList.value = response.data.map(complex => complex.interestId);
+      console.log(interestComplexNameList.value);
+    })
+    .catch((error) => {
+      console.error("Error:");
+    });
+}
+
+
 
 const posts = ref([]);
 const scrollContainerRef = ref(null);
@@ -55,6 +153,8 @@ const activateComplex = () => {
 
 onMounted(() => {
   loadPosts();
+  getInterestSale();
+  getInterestComplex();
 });
 
 const coordinate = {
@@ -88,394 +188,13 @@ const coordinate = {
         </ul>
       </nav>
       <div v-if="activeSale" class="card-group card-group-scroll">
-        <AreaInterestCard />
-        <AreaInterestCard />
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp"
-            class="card-img-top"
-            alt="Hollywood Sign on The Hill"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/042.webp"
-            class="card-img-top"
-            alt="Palm Springs Road"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This card has supporting text below as a natural lead-in to
-              additional content.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/043.webp"
-            class="card-img-top"
-            alt="Los Angeles Skyscrapers"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp"
-            class="card-img-top"
-            alt="Hollywood Sign on The Hill"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/045.webp"
-            class="card-img-top"
-            alt="Palm Springs Road"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This card has supporting text below as a natural lead-in to
-              additional content.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/046.webp"
-            class="card-img-top"
-            alt="Los Angeles Skyscrapers"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
+        <SaleInterestCard v-for="sale in interestSaleList" :key="sale.interestId" :sale="sale" />
+
       </div>
       <div v-else class="card-group card-group-scroll">
-        <AptInterestCard />
-        <AptInterestCard />
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp"
-            class="card-img-top"
-            alt="Hollywood Sign on The Hill"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/042.webp"
-            class="card-img-top"
-            alt="Palm Springs Road"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This card has supporting text below as a natural lead-in to
-              additional content.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/043.webp"
-            class="card-img-top"
-            alt="Los Angeles Skyscrapers"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp"
-            class="card-img-top"
-            alt="Hollywood Sign on The Hill"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/045.webp"
-            class="card-img-top"
-            alt="Palm Springs Road"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This card has supporting text below as a natural lead-in to
-              additional content.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/046.webp"
-            class="card-img-top"
-            alt="Los Angeles Skyscrapers"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
+        <ComplexInterestCard />
       </div>
-      <h1 class="">좋아요한 매물</h1>
-      <div class="card-group card-group-scroll">
-        <!-- <div class="card"> -->
-          <div class="card h-50">
-
-            <KakaoMap
-              :lat="coordinate.lat"
-              :lng="coordinate.lng"
-              :draggable="true"
-              level="5"
-              style="height: 200px"
-              class="w-100"
-            >
-              <KakaoMapMarker
-                :lat="coordinate.lat"
-                :lng="coordinate.lng"
-              ></KakaoMapMarker>
-            </KakaoMap>
-            <AptSale class="" :info="{ aptName: '한남더힐' }" />
-            
-          </div>
-        <!-- <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp"
-            class="card-img-top"
-            alt="Hollywood Sign on The Hill"
-            />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div> -->
-        <!-- </div> -->
-        <!-- <div class="card">
-          <li class="sidebar-item mb-3">
-            <a class="" href="/apt-detail">
-              <div class="row bg-gray p-3" style="background-color: white">
-                <div class="col-5 d-flex">
-                  <img
-                    class="rounded w-100 align-middle"
-                    src="@/assets/images/blog/blog-img1.jpg"
-                    alt="prd1"
-                  />
-                </div>
-                <div class="col-7">
-                  <div class="row">
-                    <div class="col-9">
-                      <h5 class="omyu_pretty">한남더힐</h5>
-                    </div>
-                    <div class="col-3">
-                      <input type="checkbox" id="heart" />
-                    </div>
-                  </div>
-
-                  <h6 class="">100 만원</h6>
-                  <p class="mb-0">50 층 / 남향</p>
-                </div>
-              </div>
-            </a>
-          </li>
-        </div> -->
-        <div class="card h-50">
-          <img
-            src="@/assets/images/blog/blog-img1.jpg"
-            class="card-img-top"
-            alt="Palm Springs Road"
-          />
-          <div class="card-body">
-            <h5 class="card-title">한남더힐</h5>
-            <p class="card-text">
-              <h6 class="mb-0">100 만원</h6>
-              <p class="mb-0 text-black">50 층 / 남향</p>
-              <!-- <p class="mb-0 text-black">남향</p> -->
-            </p>
-          </div>
-          <!-- <div class="card-footer"> -->
-            <!-- <small class="text-muted">Last updated 3 mins ago</small> -->
-                    <KakaoMap
-              :lat="coordinate.lat"
-              :lng="coordinate.lng"
-              :draggable="true"
-              level="5"
-              style="height: 200px"
-              class="w-100"
-            >
-              <KakaoMapMarker
-                :lat="coordinate.lat"
-                :lng="coordinate.lng"
-              ></KakaoMapMarker>
-            </KakaoMap>
-          <!-- </div> -->
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/043.webp"
-            class="card-img-top"
-            alt="Los Angeles Skyscrapers"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp"
-            class="card-img-top"
-            alt="Hollywood Sign on The Hill"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/045.webp"
-            class="card-img-top"
-            alt="Palm Springs Road"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This card has supporting text below as a natural lead-in to
-              additional content.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/standard/city/046.webp"
-            class="card-img-top"
-            alt="Los Angeles Skyscrapers"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-      </div>
+      
       <h1>나의 글</h1>
       <MyFeedPostList />
     </div>
