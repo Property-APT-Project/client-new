@@ -16,12 +16,12 @@ const dealInfo = ref(null);
 const complexInterestList = ref([]);
 
 const props = defineProps({
-  saleList:Object,
-  complexList:Object,
+  saleList: Object,
+  complexList: Object,
   interestSaleList: Object,
-  interestComplexList:Object,
+  interestComplexList: Object,
   nonInterestSaleList: Object,
-  nonInterestComplexList:Object
+  nonInterestComplexList: Object
 })
 
 console.log(props);
@@ -49,7 +49,7 @@ const selectedAptList = ref([]);
 
 const emit = defineEmits(["selectLat", "selectLng", "dealInfo"]);
 
-watch(dealInfo, (newInfo, prevInfo)=>{
+watch(dealInfo, (newInfo, prevInfo) => {
   emit("dealInfo", dealInfo.value);
   console.log("dealInfo", dealInfo.value);
 })
@@ -68,9 +68,9 @@ watch(currInfo, (newInfo, prevInfo) => {
 
   const path = "http://localhost:8080/where-is-my-home/api/v1";
 
-  axios.get(path+`/house-info/sale-articles/complex/${newInfo.aptName}?dongCode=${newInfo.dongCode.substr(0, 8)}`,{
+  axios.get(path + `/house-info/sale-articles/complex/${newInfo.aptName}?dongCode=${newInfo.dongCode.substr(0, 8)}`, {
 
-  }).then((response) =>{
+  }).then((response) => {
     selectedAptList.value = response['data'];
 
   }).catch((response) => {
@@ -86,6 +86,56 @@ const toggleModal = inject('toggleModal');
 const handleOpenModal = () => {
   toggleModal();
 };
+
+const changeSaleListState = (flag, info) => {
+  if (!flag)
+    return;
+
+  const id = info.id;
+
+  const index1 = props.interestSaleList.findIndex(item => item.id === id);
+  const index2 = props.nonInterestSaleList.findIndex(item => item.id === id);
+  console.log("index", index1, index2)
+  if (index1 !== -1) {
+    props.interestSaleList.splice(index1, 1);
+    props.nonInterestSaleList.push(info);
+  }
+  else if (index2 !== -1) {
+    props.nonInterestSaleList.splice(index2, 1);
+    props.interestSaleList.push(info);
+  }
+
+  console.log(info);
+
+
+
+}
+
+const changeComplexListState = (flag, info) => {
+  if (!flag)
+    return;
+
+  const aptName = info.aptName;
+
+  const index1 = props.interestComplexList.findIndex(item => item.aptName === aptName);
+  const index2 = props.nonInterestComplexList.findIndex(item => item.aptName === aptName);
+  console.log("index", index1, index2)
+  if (index1 !== -1) {
+    props.interestComplexList.splice(index1, 1);
+    props.nonInterestComplexList.push(info);
+  }
+  else if (index2 !== -1) {
+    props.nonInterestComplexList.splice(index2, 1);
+    props.interestComplexList.push(info);
+  }
+
+  console.log(info);
+
+
+
+}
+
+
 </script>
 
 <template>
@@ -113,11 +163,16 @@ const handleOpenModal = () => {
             <span class="hide-menu">Interest</span>
           </li>
           <span v-if="isSelectComplex"> </span>
-          <span v-else-if="activeSale"><apt-sale v-for="info in interestSaleList" :key="info.id" :info="info" />
+          <span v-else-if="activeSale">
+            <apt-sale v-for="info in interestSaleList" 
+            @isChanged="(flag) => changeSaleListState(flag, info)"
+            :key="info.id" 
+            :info="info" />
           </span>
           <span v-else>
-            <apt-complex v-for="info in interestComplexList" @dealInfo="(info)=>(dealInfo=info)"  @response="(info) => (currInfo = info)" :key="info.aptName"
-              :info="info" />
+            <apt-complex v-for="info in interestComplexList" @dealInfo="(info) => (dealInfo = info)"
+              @response="(info) => (currInfo = info)" :key="info.aptName"
+              @isChanged="(flag) => changeComplexListState(flag, info)" :info="info" />
           </span>
 
           <li v-if="!isSelectComplex">
@@ -128,12 +183,17 @@ const handleOpenModal = () => {
             <span class="hide-menu">LIST</span>
           </li>
           <span v-if="isSelectComplex">
-            <apt-sale v-for="info in selectedAptList" :key="info.id" :info="info" />
+            <apt-sale v-for="info in selectedAptList" 
+            @isChanged="(flag) => changeSaleListState(flag, info)"
+            :key="info.id" :info="info" />
           </span>
-          <span v-else-if="activeSale"><apt-sale v-for="info in nonInterestSaleList" :key="info.id" :info="info" :interest="false" /></span>
+          <span v-else-if="activeSale"><apt-sale v-for="info in nonInterestSaleList" :key="info.id" :info="info"
+            @isChanged="(flag) => changeSaleListState(flag, info)"  
+            :interest="false" /></span>
           <span v-else>
-            <apt-complex v-for="info in nonInterestComplexList" @dealInfo="(info)=>(dealInfo=info)" @response="(info) => (currInfo = info)" :key="info.aptName"
-              :info="info" />
+            <apt-complex v-for="info in nonInterestComplexList" @dealInfo="(info) => (dealInfo = info)"
+              @response="(info) => (currInfo = info)" @isChanged="(flag) => changeComplexListState(flag, info)"
+              :key="info.aptName" :info="info" />
           </span>
         </ul>
       </div>

@@ -9,7 +9,7 @@ const props = defineProps({
   info: Object,
 });
 
-const emit = defineEmits(["response", "dealInfo"]);
+const emit = defineEmits(["response", "dealInfo", "isChanged"]);
 function clickComplexButton(info) {
   emit("response", info);
 }
@@ -100,6 +100,8 @@ function changeState() {
     registInterest();
   else
     deleteInterest();
+
+    emit("isChanged", true);
 
 }
 
