@@ -253,8 +253,18 @@ async function handleSubmit() {
                             >
                               인증 메일 요청
                             </button>
-                            <button v-else class="btn btn-primary w-100">
+                            <button
+                              v-else-if="isRequested && !tokenInStorage"
+                              class="btn btn-primary w-100"
+                            >
                               재요청
+                            </button>
+                            <button
+                              :disabled="tokenInStorage"
+                              v-else
+                              class="btn btn-primary w-100"
+                            >
+                              인증완료
                             </button>
                           </div>
                         </div>

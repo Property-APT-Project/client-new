@@ -7,6 +7,7 @@ import AptSale from "@/components/apt-info/sales/AptSale.vue";
 import PostCard from "@/components/community/PostCard.vue";
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 import PostCardFeed from "@/components/community/PostCardFeed.vue";
+import MyFeedPostList from "@/components/my-feed/MyFeedPostList.vue";
 
 const posts = ref([]);
 const scrollContainerRef = ref(null);
@@ -476,10 +477,11 @@ const coordinate = {
         </div>
       </div>
       <h1>나의 글</h1>
+      <MyFeedPostList />
       <div class="card-group card-group-scroll">
-        <div class="card">
+        <!-- <div class="card">
           <PostCardFeed />
-        </div>
+        </div> -->
         <div class="card overflow-hidden hover-img">
           <div class="position-relative">
             <a href="javascript:void(0)">
