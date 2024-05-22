@@ -190,11 +190,11 @@ const coordinate = {
         </ul>
       </nav>
       <div v-if="activeSale" class="card-group card-group-scroll" style="margin-bottom: 10%;">
-        <SaleInterestCard v-for="sale in interestSaleList" :key="sale.interestId" :sale="sale" />
+        <SaleInterestCard class="me-3" v-for="sale in interestSaleList" :key="sale.interestId" :sale="sale" />
 
       </div>
       <div v-else class="card-group card-group-scroll">
-        <ComplexInterestCard v-for="complex in interestComplexList" :key="complex.interestId" :complex="complex" />
+        <ComplexInterestCard class="me-3" v-for="complex in interestComplexList" :key="complex.interestId" :complex="complex" />
       </div>
       
       <h1 class="p-0 mt-3 mb-3 omyu_pretty">나의 글</h1>
