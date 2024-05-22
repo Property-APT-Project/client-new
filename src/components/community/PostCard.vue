@@ -85,13 +85,19 @@ function formatDate(dateString) {
           >{{ post.title }}</router-link
         >
 
-        <div class="d-flex align-items-center gap-4">
-          <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2">
+          <div class="d-flex align-items-center gap-1">
             <i class="ti ti-eye text-dark fs-5"></i> {{ post.hit }}
           </div>
-          <div class="d-flex align-items-center gap-2">
+          <div class="d-flex align-items-center gap-1">
             <i class="ti ti-message-2 text-dark fs-5"></i>
             {{ post.comments.length }}
+          </div>
+          <div>
+            <div class="d-flex align-items-center gap-1 like clickable">
+              <i class="fas fa-thumbs-up"></i>
+              {{ post.like }}
+            </div>
           </div>
           <div class="d-flex align-items-center fs-2 ms-auto">
             <i class="ti ti-point text-dark"></i>

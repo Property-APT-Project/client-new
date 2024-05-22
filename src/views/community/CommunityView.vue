@@ -62,9 +62,11 @@ onMounted(() => {
     showButton.value = true;
     isAuthenticated.value = true;
   }
+  postStore.reset();
   postStore.fetchPosts();
   window.addEventListener("scroll", handleScroll);
   // loadPosts();
+  // console.log("yo");
 });
 </script>
 

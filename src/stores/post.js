@@ -13,9 +13,8 @@ export const usePostStore = defineStore("post", {
     hasMore: true,
   }),
   actions: {
-    fetchPosts() {
+    async fetchPosts() {
       if (this.loading || !this.hasMore) return;
-
       this.loading = true;
       return axios
         .get(VITE_APP_API_POST, {
@@ -32,7 +31,6 @@ export const usePostStore = defineStore("post", {
           }
           // this.posts = response.data;
           this.posts = [...this.posts, ...response.data];
-          console.log(this.posts);
           this.page += 1;
         })
         .catch((error) => {
@@ -54,6 +52,35 @@ export const usePostStore = defineStore("post", {
         .then((response) => {
           console.log(response.data);
           this.posts.unshift(response.data);
+          this.posts.sort(
+            (a, b) => new Date(b.createTime) - new Date(a.createTime)
+          ); // 최신순으로 정렬
+          console.log(this.posts);
+        })
+        .catch((error) => {
+          console.error("Error adding post:", error);
+        });
+    },
+    reset() {
+      this.posts = [];
+      this.limit = 5;
+      this.page = 1;
+      this.loading = false;
+      this.hasMore = true;
+    },
+    updatePost(newPost) {
+      const tokenCookie = Cookies.get("authToken");
+      const token = JSON.parse(tokenCookie);
+      console.log(newPost);
+      return axios
+        .put(`${VITE_APP_API_POST}/${newPost.id}`, newPost, {
+          headers: {
+            Authorization: "Bearer " + token.accessToken,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          // this.posts.unshift(response.data);
           this.posts.sort(
             (a, b) => new Date(b.createTime) - new Date(a.createTime)
           ); // 최신순으로 정렬
