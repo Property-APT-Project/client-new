@@ -264,7 +264,7 @@ const handleSubmit = () => {
                           <img
                             :src="VITE_APP_API_DEFUALT_PROFILE_IMAGE"
                             id="profileImage"
-                            class="card-img img-thumbnail rounded"
+                            class="card-img img-thumbnail rounded-circle"
                             alt="..."
                           />
                         </div>
@@ -483,5 +483,9 @@ input::placeholder {
 .shake {
   animation: shake 0.5s;
   border: 1px solid red;
+}
+
+.rounded-circle {
+  object-fit: cover;
 }
 </style>

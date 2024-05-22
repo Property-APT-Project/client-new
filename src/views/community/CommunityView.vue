@@ -2,20 +2,71 @@
 import PostForm from "/src/components/community/PostForm.vue";
 import PostCard from "/src/components/community/PostCard.vue";
 import PostCardList from "/src/components/community/PostCardList.vue";
+import Cookies from "js-cookie";
+import { ref, onMounted, onUnmounted } from "vue";
+import { usePostStore } from "@/stores/post";
+import { useRouter } from "vue-router";
 
-import { ref, onMounted } from "vue";
-const handleScroll = () => {
-  const bottomOfWindow =
+// const handleScroll = () => {
+//   const bottomOfWindow =
+//     window.innerHeight + window.scrollY >=
+//     document.documentElement.offsetHeight;
+//   if (bottomOfWindow) {
+//     // loadPosts();
+//     console.log("LOADING>>>>");
+//   }
+// };
+
+const postStore = usePostStore();
+const isLoading = ref(false);
+
+const loadMorePosts = () => {
+  if (
     window.innerHeight + window.scrollY >=
-    document.documentElement.offsetHeight;
-  if (bottomOfWindow) {
-    // loadPosts();
+    document.documentElement.scrollHeight - 1
+  ) {
+    if (
+      !postStore.loading &&
+      postStore.hasMore &&
+      (isAuthenticated.value || postStore.page <= 2)
+    ) {
+      isLoading.value = true;
+      postStore.fetchPosts().then(() => {
+        isLoading.value = false;
+      });
+    }
   }
 };
 
+const handleScroll = () => {
+  if (!isLoading.value) {
+    loadMorePosts();
+  }
+};
+
+// onMounted(() => {
+//   postStore.fetchPosts();
+//   window.addEventListener("scroll", handleScroll);
+// });
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
+
+const showButton = ref(false);
+const isAuthenticated = ref(false);
+const router = useRouter();
 onMounted(() => {
+  const token = Cookies.get("authToken");
+  if (token) {
+    showButton.value = true;
+    isAuthenticated.value = true;
+  }
+  postStore.reset();
+  postStore.fetchPosts();
   window.addEventListener("scroll", handleScroll);
   // loadPosts();
+  // console.log("yo");
 });
 </script>
 
@@ -36,6 +87,7 @@ onMounted(() => {
     <div class="body-wrapper-inner mb-6 container-fluid w-100">
       <div class="mb-3 d-flex justify-content-center fixed-bottom">
         <button
+          v-if="showButton"
           class="mt-3 responsive-button btn btn-success text-nowrap shadow-lg fs-3 text-center rounded-4"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
@@ -50,6 +102,7 @@ onMounted(() => {
           <i class="fa-solid fa-lock"></i>
         </router-link>
       </div> -->
+
       <PostForm />
       <div class="ms-2 me-2">
         <div class="row">

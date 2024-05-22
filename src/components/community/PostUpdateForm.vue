@@ -1,55 +1,85 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch, defineEmits } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { usePostStore } from "@/stores/post";
 
+const props = defineProps({
+  initialPost: {
+    type: Object,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["post-updated"]);
+
 const formData = ref({
+  id: "",
   imgURL: "",
   title: "",
   content: "",
 });
 
+watch(
+  () => props.initialPost,
+  (newPost) => {
+    formData.value.id = newPost.id;
+    formData.value.imgURL = newPost.imgURL;
+    formData.value.title = newPost.title;
+    formData.value.content = newPost.content;
+  },
+  { immediate: true }
+);
+
 const postStore = usePostStore();
+const isImgChanged = ref(false);
 
 function resetForm() {
-  formData.value.title = "";
-  formData.value.content = "";
+  console.log("RESET");
+  formData.value.id = props.initialPost.id;
+  formData.value.imgURL = props.initialPost.imgURL;
+  formData.value.title = props.initialPost.title;
+  formData.value.content = props.initialPost.content;
 }
+
 const { VITE_APP_API_NEW_POST, VITE_APP_API_POST_UPLOAD } = import.meta.env;
 const router = useRouter();
 
 const handleSubmit = async () => {
-  const form = new FormData();
-  form.append("file", file.value);
+  if (isImgChanged.value) {
+    const form = new FormData();
+    form.append("file", file.value);
 
-  console.log("file" + file.value);
-  await axios
-    .post(VITE_APP_API_POST_UPLOAD, form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((response) => {
-      formData.value.imgURL = response.data;
-      console.log("Image uploaded successfully:", response.data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    console.log("file" + file.value);
+    await axios
+      .post(VITE_APP_API_POST_UPLOAD, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        formData.value.imgURL = response.data;
+        console.log("Image uploaded successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 
   postStore
-    .addPost(formData.value)
-    .then(
+    .updatePost(formData.value)
+    .then(() => {
       Swal.fire({
         // title: "",
-        text: "등록되었습니다.",
+        text: "수정되었습니다.",
         icon: "success",
-      })
-    )
+      });
+      emit("post-updated");
+    })
     .then(resetForm)
+
     .catch((error) => {
       console.error("Error submitting post:", error);
     });
@@ -85,7 +115,7 @@ async function sendData() {
     .then((response) => {
       console.log("SUCCESS");
       console.log(response.data);
-      emit("post-added", response.data);
+      // emit("post-added", response.data);
       Swal.fire({
         // title: "",
         text: "등록되었습니다.",
@@ -102,6 +132,7 @@ async function uploadImage(event) {
   const files = event.target?.files;
   file.value = files[0];
   await base64(file.value);
+  isImgChanged.value = true;
 }
 function base64(file) {
   return new Promise((resolve) => {
@@ -160,7 +191,7 @@ function base64(file) {
                 <div class="row">
                   <div class="col d-flex justify-content-center">
                     <img
-                      src="@/assets/images/blog/blog-img1.jpg"
+                      :src="`${VITE_APP_API_POST_UPLOAD}/${formData.imgURL}`"
                       id="profileImage"
                       class="card-img img-thumbnail"
                       alt="..."
@@ -212,7 +243,7 @@ function base64(file) {
             class="btn btn-primary"
             data-bs-dismiss="modal"
           >
-            작성 완료
+            수정 완료
           </button>
         </div>
       </div>

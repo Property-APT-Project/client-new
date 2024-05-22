@@ -12,6 +12,7 @@ import AptView from "@/views/AptView.vue";
 import AptDetailView from "@/views/AptDetailView.vue";
 import MyFeedView from "@/views/MyFeedView.vue";
 import Cookies from "js-cookie";
+import ConfirmReset from "@/components/user/ConfirmReset.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,7 @@ const router = createRouter({
       path: "/community",
       name: "community",
       component: CommunityView,
+      // meta: { requiresAuth: true },
     },
     {
       path: "/posts/:id",
@@ -80,13 +82,19 @@ const router = createRouter({
       path: "/apt-detail",
       name: "apt-detail",
       component: AptDetailView,
-      props: route => ({info: route.query.info})
+      props: (route) => ({ info: route.query.info }),
     },
     {
       path: "/my-feed",
       name: "myFeed",
       component: MyFeedView,
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/confirm-reset",
+      name: "confirmReset",
+      component: ConfirmReset,
+      meta: { hideHeader: true },
     },
   ],
 });
