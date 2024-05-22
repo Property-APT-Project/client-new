@@ -369,6 +369,16 @@ watch(dong, (newValue, oldValue) => {
 
 getSidoList();
 
+function postComplexKeyword(keyword) {
+  const path = `http://localhost:8080/where-is-my-home/api/v1/search/${keyword}`
+  axios.post(path)
+    .then((response) => {
+      console.log("keyword 등록 성공!!")
+    }).catch((response) => {
+      console.log('keyword 등록 실패ㅠ');
+    });
+}
+
 
 function getComplexListByKeyword(level, keyword) {
   const path = `http://localhost:8080/where-is-my-home/api/v1/house-info/complexes/keyword/${keyword}`
@@ -379,6 +389,8 @@ function getComplexListByKeyword(level, keyword) {
 
       lat.value = complexList.value[0].lat;
       lng.value = complexList.value[0].lng;
+
+      postComplexKeyword(complexList.value[0].aptName);
 
 
       let bounds = map.value.getBounds();

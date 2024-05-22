@@ -6,14 +6,31 @@ import axios from "axios";
 
 const cityName = ref("서울시 강서구");
 const id = ref(0);
-const nameList = ref([
-  { id: id.value++, aptName: "자이" },
-  { id: id.value++, aptName: "래미안" },
-  { id: id.value++, aptName: "힐스테이트" },
-]);
+const nameList = ref([]);
+
+
+const lat = ref("37.566826")
+const lng = ref("126.9786567")
 
 const path = "https://land.naver.com/news/airsList.naver?baseDate=2024-05-19&page=1&size=3";
 
+const getTopSearchList = async () => {
+  const searchPath = "http://localhost:8080/where-is-my-home/api/v1/search/rank/3"
+  console.log('Fetching URL:', searchPath);
+ 
+  try {
+    const response = await axios.get(searchPath);
+    nameList.value = response.data;
+    if (response.data) {
+      console.log("keyword response")
+      console.log(nameList.value)
+    } else {
+      console.log('No data received');
+    }
+  } catch (error) {
+    console.error('keyword 조회 실패:', error.response ? error.response.data : error.message);
+  }
+};
 
 const fetchNewsInfo = async () => {
   console.log('Fetching URL:', path);
@@ -32,12 +49,10 @@ const fetchNewsInfo = async () => {
   }
 };
 
-const coordinate = {
-  lat: 37.566826,
-  lng: 126.9786567,
-};
+
 
 fetchNewsInfo();
+getTopSearchList();
 
 </script>
 
@@ -47,7 +62,7 @@ fetchNewsInfo();
       <div class="col-auto"><img src="@/assets/icons/icon-ranking-title.png" width="40px" /></div>
       <div class="col-auto p-0">
         <h2>
-          {{ cityName }} <span><b>Top3</b></span>
+          단지 검색어 <span><b>Top3</b></span>
         </h2>
       </div>
     </div>
@@ -55,11 +70,11 @@ fetchNewsInfo();
   <div class="row mt-3 mb-3">
     <div class="col-lg-12">
       <div class="row">
-        <RankApt v-for="aptInfo in nameList" :key="aptInfo.id" :aptInfo="aptInfo" />
+        <RankApt v-for="aptInfo in nameList" :key="aptInfo.keyword" :aptInfo="aptInfo" />
       </div>
     </div>
   </div>
-  <FocusedMap :lat="coordinate.lat" :lng="coordinate.lng" />
+  <FocusedMap :lat="lat" :lng="lng" />
 </template>
 
 <style scoped></style>

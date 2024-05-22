@@ -1,8 +1,54 @@
 <script setup>
+import { useRoute, useRouter } from 'vue-router';
+import Cookies from "js-cookie";
+import axios from "axios";
+import { ref, watch } from 'vue';
+
+
 const props = defineProps({
     sale: Object,
     complex: Object
 });
+async function registInterest() {
+  const tokenCookie = Cookies.get("authToken");
+  const token = JSON.parse(tokenCookie);
+
+  console.log("post!!!!!!", "http://localhost:8080/where-is-my-home/interest/post");
+  console.log('props.info:', props.sale); // props.info의 내용을 확인
+  console.log('props.info.id:', props.sale.id); // props.info.id 값을 확인
+
+  const requestBody = {
+    id: 0,
+    userId: 0,
+    category: 1, // 예제에서 category가 1이라고 설정
+    interestId: props.sale.id,
+    lng: props.sale.lng,
+    lat: props.sale.lat
+  };
+
+  console.log('Request Body:', requestBody);
+
+  await axios.post(
+    "http://localhost:8080/where-is-my-home/interest/post",
+    requestBody,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: "Bearer " + token.accessToken
+      }
+    }
+  )
+    .then((response) => {
+      console.log("post 성공", response);
+    })
+    .catch((error) => {
+      console.error("post 실패", error);
+      isSelectInterest.value = !isSelectInterest.value;
+    });
+
+}
+
+
 
 </script>
 
@@ -17,7 +63,7 @@ const props = defineProps({
             </div>
             <div class="row w-90 m-2 mt-3">
                 <div class="col-3 p-0 m-0 align-items-center w-100">
-                    <button @click="" class="p-2 w-100 rounded-pill bg-light text-gray align-self-center" type="button"
+                    <button @click="registInterest" class="p-2 w-100 rounded-pill bg-light text-gray align-self-center" type="button"
                         style="font-size: 12px; border: none">
                         관심매물 추가
                     </button>

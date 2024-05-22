@@ -1,10 +1,6 @@
 <script setup>
 import FocusedMap from "@/components/common/FocusedMap.vue";
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
-const coordinate = {
-  lat: 37.537547,
-  lng: 127.010049,
-};
 
 const props = defineProps({
   complex: Object
